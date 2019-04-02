@@ -1,0 +1,47 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - restore_cache: # special step to restore the dependency cache
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          keys: 
+            - dependency-cache-{{ checksum "package.json" }}
+            - dependency-cache-
+
+      - run:
+          name: yarn-install
+          command: yarn install
+
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+
+      - run:
+          name: Test
+          command: |
+            yarn test
+
+      - run:
+          name: Build and push Docker image
+          command: | 
+            yarn gencss
+            docker build -t $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID .
+            docker login -u $DOCKER_LOGIN -p $DOCKER_PWD
+            docker push $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID
+
+      - deploy:
+          name: Deploy app to Digital Ocean Server via Docker
+          command: |
+            ssh -o StrictHostKeyChecking=no $SSH_PATH "docker image pull $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID && docker rm $IMAGE_NAME -f && docker run -e 'NODE_ENV=production' -e 'API_KEY=$API_KEY' -d -p 3000:3000 --name $IMAGE_NAME $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID"
+            # $SSH_PATH = root@norapat.com
