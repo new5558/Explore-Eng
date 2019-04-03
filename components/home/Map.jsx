@@ -45,7 +45,7 @@ export default class extends Component {
   }
 
   getLocation = (success, failure) => {
-      navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition(
+    navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition(
       position => success(position),
       error => failure(error)
     );
@@ -88,18 +88,12 @@ export default class extends Component {
           defaultZoom={this.props.zoom}
           options={this.props.createMapOptions}
           center={{ lat: this.state.centerLattitude, lng: this.state.centerLongtitude }}
-          onChange={({ zoom }) => this.setState({currentZoom: zoom})}
+          onChange={({ zoom }) => this.setState({ currentZoom: zoom })}
         >
           <Marker
             lat={13.741528}
             lng={100.5333099}
             text="Waste 1"
-          />
-          <CurrentLocation
-            zoom={this.state.currentZoom}
-            lat={this.state.currentLattitude}
-            lng={this.state.currentLongtitude}
-            acc={this.state.currentAccuracy}
           />
           <Marker
             lat={13.741528}
@@ -110,6 +104,12 @@ export default class extends Component {
             lat={13.751528}
             lng={100.5493099}
             text="Waste 3"
+          />
+          <CurrentLocation
+            zoom={this.state.currentZoom}
+            lat={this.state.currentLattitude}
+            lng={this.state.currentLongtitude}
+            acc={this.state.currentAccuracy}
           />
         </GoogleMapReact>
         <div className="fixed z-50 pin-b pin-r mr-4 mb-8" onClick={() => {
