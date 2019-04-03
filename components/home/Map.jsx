@@ -8,10 +8,6 @@ import CurrentLocation from './CurrentLocation';
 
 export default class extends Component {
   static defaultProps = {
-    // center: {
-    //   lat: 13.741528,
-    //   lng: 100.5333099
-    // },
     zoom: 15,
     createMapOptions: function (maps) {
       // next props are exposed at maps
@@ -24,10 +20,6 @@ export default class extends Component {
         styles: mapStyle,
         zoomControl: false,
         fullscreenControl: false,
-        // mapTypeControlOptions: {
-        //   position: maps.ControlPosition.LEFT_CENTER
-        // },
-        // mapTypeControl: true
       };
     }
 
