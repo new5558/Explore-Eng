@@ -17,13 +17,13 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div className="fixed h-48 px-6 pin-t pin-l w-full z-50 flex flex-col items-center justify-center">
+        <div className="fixed h-16 px-3 pin-t pin-l w-full z-50 flex flex-col items-center justify-center">
           <SearchBar />
         </div>
         <Map apiKey={this.props.env} />
-        <div className="fixed z-50 pin-b pin-r mr-24 mb-24">
+        <div className="fixed z-50 pin-b pin-r mr-4 mb-8">
           <CircleBtn>
-            <div className="w-16 h-16" >
+            <div className="w-8 h-8" >
               <LocationIcon fill="white" />
             </div>
           </CircleBtn>
