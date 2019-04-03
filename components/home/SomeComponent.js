@@ -1,20 +1,40 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
-// import Icons from '../../static/icons/pin.svg'
+import mapStyle from '../../util/map';
 
-const Marker = ({ text, color }) => (
-  <div className={"w-5 h-5 bg-"}>
-  <img className="w-5 h-5" src="../../static/icons/pin.svg"/>
+const Marker = ({ text }) => (
+  <div className={"w-16 h-16 bg-"}>
+    <img className="w-16 h-16" src="../../static/icons/pin.svg" />
   </div>
 );
 
 export default class extends Component {
   static defaultProps = {
     center: {
-      lat: 59.95,
-      lng: 30.33
+      lat: 13.741528,
+      lng: 100.5333099
     },
-    zoom: 11
+    zoom: 15,
+    createMapOptions: function (maps) {
+      // next props are exposed at maps
+      // "Animation", "ControlPosition", "MapTypeControlStyle", "MapTypeId",
+      // "NavigationControlStyle", "ScaleControlStyle", "StrokePosition", "SymbolPath", "ZoomControlStyle",
+      // "DirectionsStatus", "DirectionsTravelMode", "DirectionsUnitSystem", "DistanceMatrixStatus",
+      // "DistanceMatrixElementStatus", "ElevationStatus", "GeocoderLocationType", "GeocoderStatus", "KmlLayerStatus",
+      // "MaxZoomStatus", "StreetViewStatus", "TransitMode", "TransitRoutePreference", "TravelMode", "UnitSystem"
+      return {
+        styles : mapStyle,
+        // zoomControlOptions: {
+        //   position: maps.ControlPosition.RIGHT_CENTER,
+        //   style: maps.ZoomControlStyle.SMALL
+        // },
+        // mapTypeControlOptions: {
+        //   position: maps.ControlPosition.TOP_RIGHT
+        // },
+        // mapTypeControl: true
+      };
+    }
+    
   };
 
   render() {
@@ -25,25 +45,22 @@ export default class extends Component {
           bootstrapURLKeys={{ key: this.props.apiKey }}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
-          options={createMapOptions}a2
+          options={this.props.createMapOptions}
         >
           <Marker
-            lat={59.975413}
-            lng={30.337844}
+            lat={13.741528}
+            lng={100.5333099}
             text="Waste 1"
-            color="red"
           />
           <Marker
-            lat={59.905509}
-            lng={30.397940}
+            lat={13.741528}
+            lng={100.5433099}
             text="Waste 2"
-            color="green"
           />
           <Marker
-            lat={59.905217}
-            lng={30.337849}
+            lat={13.751528}
+            lng={100.5493099}
             text="Waste 3"
-            color="yellow"
           />
         </GoogleMapReact>
       </div>
