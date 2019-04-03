@@ -12,7 +12,10 @@ export default
       "elementType": "labels.icon",
       "stylers": [
         {
-          "visibility": "off"
+          "color": "#837588"
+        },
+        {
+          "visibility": "simplified"
         }
       ]
     },
@@ -75,7 +78,7 @@ export default
       "elementType": "geometry.fill",
       "stylers": [
         {
-          "color": "#FFED00"
+          "color": "#f1f95b"
         }
       ]
     },
@@ -104,6 +107,14 @@ export default
         {
           "saturation": -100
         },
+        {
+          "visibility": "off"
+        }
+      ]
+    },
+    {
+      "featureType": "transit.station",
+      "stylers": [
         {
           "visibility": "off"
         }

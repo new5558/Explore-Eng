@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import mapStyle from '../../util/map';
-import  '../../static/css/map.css'
+
 
 const Marker = ({ text }) => (
   <div className={"w-16 h-16 bg-"}>
