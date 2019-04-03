@@ -1,14 +1,14 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import SomeComponent from '../components/home/SomeComponent';
+import Map from '../components/home/Map';
 
 import Home from '../pages/index';
 
 // test components
 
 it('renders without crashing', () => {
-    shallow(<SomeComponent />);
+    shallow(<Map />);
 });
 
 // test pages
