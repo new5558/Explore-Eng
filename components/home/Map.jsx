@@ -5,10 +5,10 @@ import Marker from './Marker';
 
 export default class extends Component {
   static defaultProps = {
-    center: {
-      lat: 13.741528,
-      lng: 100.5333099
-    },
+    // center: {
+    //   lat: 13.741528,
+    //   lng: 100.5333099
+    // },
     zoom: 15,
     createMapOptions: function (maps) {
       // next props are exposed at maps
@@ -32,19 +32,42 @@ export default class extends Component {
     
   };
 
+  constructor(props) {
+    super(props);
+    this.state= {
+      currentLattitude: null,
+      currentLongtitude: null,
+    }
+  }
+
+  componentDidMount() {
+    navigator && navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({currentLattitude: position.coords.latitude, currentLongtitude: position.coords.longitude});
+      },
+      error => console.log(error)
+    )
+  }
+
   render() {
+    console.log(this.state)
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: this.props.apiKey }}
-          defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
           options={this.props.createMapOptions}
+          center={{lat: this.state.currentLattitude, lng: this.state.currentLongtitude}}
         >
           <Marker
             lat={13.741528}
             lng={100.5333099}
+            text="Waste 1"
+          />
+          <Marker
+            lat={this.state.currentLattitude}
+            lng={this.state.currentLongtitude}
             text="Waste 1"
           />
           <Marker
