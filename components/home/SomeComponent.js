@@ -38,6 +38,7 @@ export default class extends Component {
   };
 
   render() {
+    console.log(this.props.apiKey, 'key')
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
