@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import mapStyle from '../../util/map';
-
-
-const Marker = ({ text }) => (
-  <div className={"w-16 h-16 bg-"}>
-    <img className="w-16 h-16" src="../../static/icons/pin.svg" />
-  </div>
-);
+import Marker from './Marker';
 
 export default class extends Component {
   static defaultProps = {
