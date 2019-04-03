@@ -134,7 +134,7 @@ export default
       "elementType": "geometry.fill",
       "stylers": [
           {
-              "color": "#f5c1b0"
+              "color": "#f57aa7"
           }
       ]
   },
@@ -143,7 +143,7 @@ export default
       "elementType": "geometry.fill",
       "stylers": [
           {
-              "color": "#f5c1b0"
+              "color": "#f57aa7"
           },
           {
               "lightness": 17
@@ -182,7 +182,7 @@ export default
       "elementType": "geometry.fill",
       "stylers": [
           {
-              "color": "#f5c1b0"
+              "color": "#f57aa7"
           }
       ]
   },
@@ -224,7 +224,7 @@ export default
       "elementType": "geometry.fill",
       "stylers": [
           {
-              "color": "#f5c1b0"
+              "color": "#f57aa7"
           }
       ]
   },
