@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import mapStyle from '../../util/map';
 import Marker from './Marker';
+import CircleBtn from '../../components/home/CircleBtn';
+import { LocationIcon } from '../../components/shared-components/Icons';
+import CurrentLocation from './CurrentLocation';
 
 export default class extends Component {
   static defaultProps = {
@@ -18,43 +21,65 @@ export default class extends Component {
       // "DistanceMatrixElementStatus", "ElevationStatus", "GeocoderLocationType", "GeocoderStatus", "KmlLayerStatus",
       // "MaxZoomStatus", "StreetViewStatus", "TransitMode", "TransitRoutePreference", "TravelMode", "UnitSystem"
       return {
-        styles : mapStyle,
-        // zoomControlOptions: {
-        //   position: maps.ControlPosition.RIGHT_CENTER,
-        //   style: maps.ZoomControlStyle.SMALL
-        // },
+        styles: mapStyle,
+        zoomControl: false,
+        fullscreenControl: false,
         // mapTypeControlOptions: {
-        //   position: maps.ControlPosition.TOP_RIGHT
+        //   position: maps.ControlPosition.LEFT_CENTER
         // },
         // mapTypeControl: true
       };
     }
-    
+
   };
 
   constructor(props) {
     super(props);
-    this.state= {
+    this.state = {
       currentLattitude: null,
       currentLongtitude: null,
+      centerLattitude: 13.75398,
+      centerLongtitude: 100.50144,
+      currentZoom: 15,
     }
   }
 
-  getLocation = () => {
-    navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition(
-      position => {
-        this.setState({currentLattitude: position.coords.latitude, currentLongtitude: position.coords.longitude});
-      },
-      error => console.log(error)
-    )
+  getLocation = (success, failure) => {
+      navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition(
+      position => success(position),
+      error => failure(error)
+    );
+  }
+
+  setCurrentLocation = (latitude, longitude, accuracy) => {
+    this.setState({ currentLattitude: latitude, currentLongtitude: longitude, currentAccuracy: accuracy })
+  }
+
+  setCenterLocation = (latitude, longitude) => {
+    this.setState({ centerLattitude: latitude, centerLongtitude: longitude })
+  }
+
+  getAndSetCurrentLocation = () => {
+    this.getLocation((position) => {
+      console.log(position)
+      this.setCurrentLocation(position.coords.latitude, position.coords.longitude, position.coords.accuracy)
+    }, console.log);
+  }
+
+  getAndSetCenterLocation = () => {
+    this.getLocation((position) => this.setCenterLocation(position.coords.latitude, position.coords.longitude), console.log);
   }
 
   componentDidMount() {
-    this.getLocation();
-    setInterval(this.getLocation, 5000);
+    this.getAndSetCenterLocation();
+    this.getAndSetCurrentLocation();
+    setInterval(() => {
+      this.getAndSetCurrentLocation();
+    }, 5000);
   }
 
   render() {
+    console.log(this.state)
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
@@ -62,17 +87,19 @@ export default class extends Component {
           bootstrapURLKeys={{ key: this.props.apiKey }}
           defaultZoom={this.props.zoom}
           options={this.props.createMapOptions}
-          center={{lat: this.state.currentLattitude, lng: this.state.currentLongtitude}}
+          center={{ lat: this.state.centerLattitude, lng: this.state.centerLongtitude }}
+          onChange={({ zoom }) => this.setState({currentZoom: zoom})}
         >
           <Marker
             lat={13.741528}
             lng={100.5333099}
             text="Waste 1"
           />
-          <Marker
+          <CurrentLocation
+            zoom={this.state.currentZoom}
             lat={this.state.currentLattitude}
             lng={this.state.currentLongtitude}
-            text="Waste 1"
+            acc={this.state.currentAccuracy}
           />
           <Marker
             lat={13.741528}
@@ -85,7 +112,22 @@ export default class extends Component {
             text="Waste 3"
           />
         </GoogleMapReact>
-      </div>
+        <div className="fixed z-50 pin-b pin-r mr-4 mb-8" onClick={() => {
+          this.getLocation(position => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            this.setState(prevState => ({
+              centerLattitude: prevState.centerLattitude * 1.00001,
+            }), this.setCenterLocation(latitude, longitude))
+          }, console.log)
+        }}>
+          <CircleBtn>
+            <div className="w-8 h-8" >
+              <LocationIcon fill="white" />
+            </div>
+          </CircleBtn>
+        </div>
+      </div >
     );
   }
 }
