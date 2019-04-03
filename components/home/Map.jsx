@@ -40,7 +40,7 @@ export default class extends Component {
     }
   }
 
-  componentDidMount() {
+  getLocation = () => {
     navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({currentLattitude: position.coords.latitude, currentLongtitude: position.coords.longitude});
@@ -49,8 +49,12 @@ export default class extends Component {
     )
   }
 
+  componentDidMount() {
+    this.getLocation();
+    setInterval(this.getLocation, 5000);
+  }
+
   render() {
-    // console.log(this.state)
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }}>
