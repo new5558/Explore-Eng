@@ -30,8 +30,7 @@ jobs:
       - run:
           name: Test
           command: |
-            yarn test
-
+            yarn test --forceExit
       - run:
           name: Build and push Docker image
           command: | 

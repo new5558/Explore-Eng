@@ -114,7 +114,9 @@ export default class extends Component {
   }
 
   render() {
-    const { apiIsLoaded, isHidden } = this.props;
+    const { apiIsLoaded, isHidden, currentLocation } = this.props;
+    const {currentLatitude, currentLongtitude} = currentLocation;
+    console.log(currentLocation, 'location')
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }} className={isHidden ? "hidden" : ""} >
@@ -136,8 +138,8 @@ export default class extends Component {
           {this.generateMarker()}
           <CurrentLocation
             zoom={this.state.currentZoom}
-            lat={this.props.currentLocation.currentLattitude}
-            lng={this.props.currentLocation.currentLongtitude}
+            lat={currentLatitude}
+            lng={currentLongtitude}
             acc={this.state.currentAccuracy}
           />
         </GoogleMapReact>

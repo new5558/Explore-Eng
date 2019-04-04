@@ -20,7 +20,7 @@ class App extends Component {
       searchValue: "",
       dataFromSearch: [],
       currentLocation: {
-        currentLattitude: null,
+        currentLatitude: null,
         currentLongtitude: null,
       },
       isSearching: false
