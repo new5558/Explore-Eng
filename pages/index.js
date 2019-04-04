@@ -43,6 +43,14 @@ class App extends Component {
     textSearch = (a, b) => service.textSearch(a, b);
   }
 
+  closeSearch = () => {
+    this.setState({
+      searchValue: "",
+      isSearching: false,
+      dataFromSearch: [],
+    })
+  }
+
   searchLocation = (value) => {
     textSearch(
       // {
@@ -82,7 +90,7 @@ class App extends Component {
     return (
       <div className="h-full">
         <div className="fixed h-16 px-3 pin-t pin-l w-full z-50 flex flex-col items-center justify-center">
-          <SearchBar value={this.state.searchValue} onChange={this.onSearchChange} />
+          <SearchBar isSearching={this.state.isSearching} closeSearch={this.closeSearch} value={this.state.searchValue} onChange={this.onSearchChange} />
         </div>
         {
           this.state.isSearching

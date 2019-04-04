@@ -7,8 +7,7 @@ WORKDIR .
 COPY . .
 
 # Building app
-RUN rm -rf node_modules/grpc
-RUN npm rebuild && npm run build
+RUN yarn install --check-files --frozen-lockfile && yarn build
 # ARG GOOGLEMAP_API_KEY
 #ENV TESTING $GOOGLEMAP_API_KEY
 # RUN echo GOOGLEMAP_API_KEY=$GOOGLEMAP_API_KEY > .env
@@ -16,4 +15,4 @@ RUN npm rebuild && npm run build
 #RUN cat .env
 
 # Running the app
-CMD ["npm", "start"]
+CMD ["yarn", "start"]

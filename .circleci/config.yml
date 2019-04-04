@@ -15,26 +15,26 @@ jobs:
       - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           keys: 
-            - dependency-cache-{{ checksum "package-lock.json" }}
+            - dependency-cache-{{ checksum "yarn.lock" }}
             - dependency-cache-
 
       - run:
-          name: npm-install
-          command: npm install
+          name: yarn-install
+          command: yarn install
 
       - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - ./node_modules
 
       - run:
           name: Test
           command: |
-            npm run test
+            yarn test --forceExit
       - run:
           name: Build and push Docker image
           command: | 
-            npm run gencss
+            yarn gencss
             docker build -t $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID .
             docker login -u $DOCKER_LOGIN -p $DOCKER_PWD
             docker push $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID

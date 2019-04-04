@@ -19,7 +19,7 @@
     "dev": "concurrently --kill-others \"yarn start:tw\" \"node server.js\"",
     "build": "next build",
     "start": "node server.js",
-    "test": "jest --forceExit",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
