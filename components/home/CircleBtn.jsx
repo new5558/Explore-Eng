@@ -1,6 +1,6 @@
-export default ( {children} ) => {
+export default ( {children, isClicked} ) => {
     return (
-        <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center">
+        <div className={"w-16 h-16 rounded-full flex items-center justify-center " + (isClicked ? "bg-blue" : "bg-black")}>
             {children}
         </div>
     );

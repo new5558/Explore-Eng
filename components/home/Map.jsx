@@ -5,6 +5,7 @@ import Marker from './Marker';
 import CircleBtn from '../../components/home/CircleBtn';
 import { LocationIcon } from '../../components/shared-components/Icons';
 import CurrentLocation from './CurrentLocation';
+import firebase from '../../util/firebase'
 
 export default class extends Component {
   static defaultProps = {
@@ -33,6 +34,8 @@ export default class extends Component {
       centerLattitude: 13.75398,
       centerLongtitude: 100.50144,
       currentZoom: 15,
+      isClickedCircleBtn: false,
+      marker: null,
     }
   }
 
@@ -64,18 +67,47 @@ export default class extends Component {
     this.getLocation((position) => this.setCenterLocation(position.coords.latitude, position.coords.longitude), console.log);
   }
 
+  componentWillMount() {
+    this.getDataFromFireBase('place', 'marker')
+      .then((marker) => this.setState({ marker }));
+  }
+
   componentDidMount() {
     this.getLocation(position => {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            this.setState(prevState => ({
-              centerLattitude: prevState.centerLattitude * 1.00001,
-            }), this.setCenterLocation(latitude, longitude))
-          }, console.log)
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      this.setState(prevState => ({
+        centerLattitude: prevState.centerLattitude * 1.00001,
+      }), this.setCenterLocation(latitude, longitude))
+    }, console.log)
     this.getAndSetCurrentLocation();
     setInterval(() => {
       this.getAndSetCurrentLocation();
     }, 5000);
+  }
+
+  getDataFromFireBase = (col, doc) => {
+    console.log('firebase called')
+    const db = firebase.firestore();
+    const marker = db.collection(col).doc(doc);
+    return marker.get()
+      .then(result => result.data());
+  }
+
+  generateMarker = () => {
+    const marker = this.state.marker
+    let setOfmarkerComponent = [];
+    for(const key in marker) {
+      setOfmarkerComponent.push(
+        <Marker
+          key={key}
+          lat={marker[key].latitude}
+          lng={marker[key].longitude}
+          text={key}
+        />
+      )
+    }
+    return setOfmarkerComponent
   }
 
   render() {
@@ -84,27 +116,18 @@ export default class extends Component {
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: this.props.apiKey }}
-          defaultZoom={this.state.currentZoom}
+          defaultZoom={this.props.zoom}
           zoom={this.state.currentZoom}
           options={this.props.createMapOptions}
           center={{ lat: this.state.centerLattitude, lng: this.state.centerLongtitude }}
-          onChange={({ zoom }) => this.setState({ currentZoom: zoom })}
+          onChange={({ zoom }) => this.setState({
+            currentZoom: zoom,
+          })}
+          onDrag={() => this.setState({
+            isClickedCircleBtn: false,
+          })}
         >
-          <Marker
-            lat={13.741528}
-            lng={100.5333099}
-            text="Waste 1"
-          />
-          <Marker
-            lat={13.741528}
-            lng={100.5433099}
-            text="Waste 2"
-          />
-          <Marker
-            lat={13.751528}
-            lng={100.5493099}
-            text="Waste 3"
-          />
+        {this.generateMarker()}
           <CurrentLocation
             zoom={this.state.currentZoom}
             lat={this.state.currentLattitude}
@@ -118,10 +141,11 @@ export default class extends Component {
             const longitude = position.coords.longitude;
             this.setState(prevState => ({
               centerLattitude: prevState.centerLattitude * 1.00001,
+              isClickedCircleBtn: true,
             }), this.setCenterLocation(latitude, longitude))
           }, console.log)
         }}>
-          <CircleBtn>
+          <CircleBtn isClicked={this.state.isClickedCircleBtn}>
             <div className="w-8 h-8" >
               <LocationIcon fill="white" />
             </div>

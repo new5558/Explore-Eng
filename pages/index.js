@@ -12,11 +12,31 @@ class App extends Component {
     }
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchValue: "",
+    }
+  }
+
+  onSearchChange = (e) => {
+    const target = e.target;
+    const value = target.value;
+    this.setState({
+      searchValue: value,
+    })
+    this.searchLocation();
+  }
+
+  searchLocation = () => {
+    
+  }
+
   render() {
     return (
       <div className="h-full">
         <div className="fixed h-16 px-3 pin-t pin-l w-full z-50 flex flex-col items-center justify-center">
-          <SearchBar />
+          <SearchBar value={this.state.searchValue} onChange={this.onSearchChange}/>
         </div>
         <Map apiKey={this.props.env} />
       </div>
