@@ -15,7 +15,7 @@ jobs:
       - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           keys: 
-            - dependency-cache-{{ checksum "yarn.lock" }}
+            # - dependency-cache-{{ checksum "yarn.lock" }}
             # - dependency-cache-
 
       - run:
