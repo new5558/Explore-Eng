@@ -29,7 +29,6 @@ export default class extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentZoom: 15,
       isClickedCircleBtn: false,
       marker: null,
     }
@@ -107,19 +106,16 @@ export default class extends Component {
 
   render() {
     const { apiIsLoaded, isHidden, currentLongtitude, currentLatitude, centerLattitude, centerLongtitude } = this.props;
-    console.log(centerLattitude, centerLongtitude, 'lat lng')
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }} className={isHidden ? "hidden" : ""} >
         <GoogleMapReact
           bootstrapURLKeys={{ key: this.props.apiKey, libraries: 'places' }}
           defaultZoom={this.props.zoom}
-          zoom={this.state.currentZoom}
+          zoom={this.props.currentZoom}
           options={this.props.createMapOptions}
           center={{ lat: centerLattitude, lng: centerLongtitude }}
-          onChange={({ zoom }) => this.setState({
-            currentZoom: zoom,
-          })}
+          onChange={({ zoom }) => this.props.setZoom(zoom)}
           onDrag={() => this.setState({
             isClickedCircleBtn: false,
           })}
@@ -128,7 +124,7 @@ export default class extends Component {
         >
           {this.generateMarker()}
           <CurrentLocation
-            zoom={this.state.currentZoom}
+            zoom={this.props.currentZoom}
             lat={currentLatitude}
             lng={currentLongtitude}
             acc={this.state.currentAccuracy}

@@ -26,6 +26,7 @@ class App extends Component {
       isSearching: false,
       centerLattitude: null,
       centerLongtitude: null,
+      currentZoom: 15,
     }
   }
 
@@ -41,7 +42,6 @@ class App extends Component {
 
   apiIsLoaded = (map, maps) => {
     const service = new maps.places.PlacesService(map);
-    console.log(map, 'service')
     textSearch = (a, b) => service.textSearch(a, b);
   }
 
@@ -59,7 +59,7 @@ class App extends Component {
       searchValue: "",
       isSearching: false,
       dataFromSearch: [],
-    }, () => this.setCenterLocation(Number(target.dataset.latitude), Number(target.dataset.longtitude))
+    }, () => this.setCenterLocation(Number(target.dataset.latitude), Number(target.dataset.longtitude), null, 17)
     );
   }
 
@@ -98,13 +98,18 @@ class App extends Component {
     })
   }
 
-  setCenterLocation = (latitude, longitude, callBack) => {
-    console.log('prepare to set state', latitude, longitude)
+  setCenterLocation = (latitude, longitude, callBack, zoom = 15) => {
     this.setState({
-      currentZoom: 15,
+      currentZoom: zoom,
       centerLattitude: latitude,
       centerLongtitude: longitude,
     }, callBack)
+  }
+
+  setZoom = (zoomLevel) => {
+    this.setState({
+      currentZoom: zoomLevel
+    })
   }
 
   render() {
@@ -130,6 +135,8 @@ class App extends Component {
           centerLattitude={this.state.centerLattitude}
           centerLongtitude={this.state.centerLongtitude}
           setCenterLocation={this.setCenterLocation}
+          setZoom={this.setZoom}
+          currentZoom={this.state.currentZoom}
         />
       </div>
     );
