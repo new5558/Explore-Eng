@@ -51,7 +51,7 @@ class App extends Component {
       // }
       {
         query: value,
-        location: new google.maps.LatLng(this.state.currentLocation.currentLattitude, this.state.currentLocation.currentLongtitude),
+        location: new google.maps.LatLng(this.state.currentLocation.currentLatitude, this.state.currentLocation.currentLongtitude),
         radius: '10000',
         // types: ['store']
       }
@@ -78,7 +78,7 @@ class App extends Component {
 
   setCurrentLocation = (lat, lng) => {
     this.setState({
-      currentLocation: { currentLattitude: lat, currentLongtitude: lng },
+      currentLocation: { currentLatitude: lat, currentLongtitude: lng },
     })
   }
 
@@ -91,11 +91,18 @@ class App extends Component {
         {
           this.state.isSearching
             ?
-            <SearchResult data={this.state.dataFromSearch}/>
+            <SearchResult data={this.state.dataFromSearch} />
             :
             <React.Fragment />
-          }
-        <Map isHidden={this.state.isSearching} setCurrentLocation={this.setCurrentLocation} currentLocation={this.state.currentLocation} apiKey={this.props.env} apiIsLoaded={this.apiIsLoaded} />
+        }
+        <Map
+          isHidden={this.state.isSearching}
+          setCurrentLocation={this.setCurrentLocation}
+          currentLatitude={this.state.currentLocation.currentLatitude}
+          currentLongtitude={this.state.currentLocation.currentLongtitude}
+          apiKey={this.props.env}
+          apiIsLoaded={this.apiIsLoaded}
+        />
       </div>
     );
   }

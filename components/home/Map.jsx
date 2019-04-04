@@ -114,9 +114,7 @@ export default class extends Component {
   }
 
   render() {
-    const { apiIsLoaded, isHidden, currentLocation } = this.props;
-    const {currentLatitude, currentLongtitude} = currentLocation;
-    console.log(currentLocation, 'location')
+    const { apiIsLoaded, isHidden, currentLongtitude, currentLatitude } = this.props;
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }} className={isHidden ? "hidden" : ""} >
