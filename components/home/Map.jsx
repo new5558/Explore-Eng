@@ -65,7 +65,13 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    this.getAndSetCenterLocation();
+    this.getLocation(position => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            this.setState(prevState => ({
+              centerLattitude: prevState.centerLattitude * 1.00001,
+            }), this.setCenterLocation(latitude, longitude))
+          }, console.log)
     this.getAndSetCurrentLocation();
     setInterval(() => {
       this.getAndSetCurrentLocation();
