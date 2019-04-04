@@ -115,10 +115,15 @@ export default class extends Component {
           zoom={this.props.currentZoom}
           options={this.props.createMapOptions}
           center={{ lat: centerLattitude, lng: centerLongtitude }}
-          onChange={({ zoom }) => this.props.setZoom(zoom)}
-          onDrag={() => this.setState({
-            isClickedCircleBtn: false,
-          })}
+          onChange={({ zoom }) => {
+            this.props.setZoom(zoom)
+          }}
+          onDrag={() => {
+            this.refs.input.blur();
+            this.setState({
+              isClickedCircleBtn: false,
+            })
+          }}
           yesIWantToUseGoogleMapApiInternals
           onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps)}
         >
