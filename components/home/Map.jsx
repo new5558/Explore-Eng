@@ -29,8 +29,6 @@ export default class extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentLattitude: null,
-      currentLongtitude: null,
       centerLattitude: null,
       centerLongtitude: null,
       currentZoom: 15,
@@ -47,11 +45,11 @@ export default class extends Component {
   }
 
   setCurrentLocation = (latitude, longitude, accuracy) => {
-    this.setState({ currentLattitude: latitude, currentLongtitude: longitude, currentAccuracy: accuracy })
+    this.setState({ currentAccuracy: accuracy }, this.props.setCurrentLocation(latitude, longitude))
   }
 
   setCenterLocation = (latitude, longitude) => {
-    this.setState({ centerLattitude: latitude, centerLongtitude: longitude, currentZoom: 15, })
+    this.setState({ currentZoom: 15 }, this.props.setCurrentLocation(latitude, longitude))
   }
 
   getAndSetCurrentLocation = () => {
@@ -73,12 +71,10 @@ export default class extends Component {
         // console.log("prepare to set center location")
         // this.setCenterLocation(latitude, longitude);
         this.setState({
-          currentLattitude: latitude,
-          currentLongtitude: longitude,
           centerLattitude: latitude,
           centerLongtitude: longitude,
           currentZoom: 15,
-        })
+        }, this.props.setCurrentLocation(latitude, longitude))
       },
       () => {
         this.setState({
@@ -118,31 +114,30 @@ export default class extends Component {
   }
 
   render() {
+    const { apiIsLoaded, isHidden } = this.props;
     return (
       // Important! Always set the container height explicitly
-      <div style={{ height: '100vh', width: '100%' }} >
+      <div style={{ height: '100vh', width: '100%' }} className={isHidden ? "hidden" : ""} >
         <GoogleMapReact
-          bootstrapURLKeys={{ key: this.props.apiKey }}
+          bootstrapURLKeys={{ key: this.props.apiKey, libraries: 'places' }}
           defaultZoom={this.props.zoom}
           zoom={this.state.currentZoom}
           options={this.props.createMapOptions}
           center={{ lat: this.state.centerLattitude, lng: this.state.centerLongtitude }}
-        // onGoogleApiLoaded={() => this.setState({
-        //   mapApiLoaded: true,
-        //   center: { lat: 13.75398, lng: 100.50144}
-        // })}
-        onChange={({ zoom }) => this.setState({
-          currentZoom: zoom,
-        })}
-        onDrag={() => this.setState({
-          isClickedCircleBtn: false,
-        })}
+          onChange={({ zoom }) => this.setState({
+            currentZoom: zoom,
+          })}
+          onDrag={() => this.setState({
+            isClickedCircleBtn: false,
+          })}
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps)}
         >
           {this.generateMarker()}
           <CurrentLocation
             zoom={this.state.currentZoom}
-            lat={this.state.currentLattitude}
-            lng={this.state.currentLongtitude}
+            lat={this.props.currentLocation.currentLattitude}
+            lng={this.props.currentLocation.currentLongtitude}
             acc={this.state.currentAccuracy}
           />
         </GoogleMapReact>
