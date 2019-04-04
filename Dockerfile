@@ -7,7 +7,8 @@ WORKDIR .
 COPY . .
 
 # Building app
-RUN yarn install && yarn build
+RUN rm -rf node_modules/grpc
+RUN yarn install --check-files --offline --frozen-lockfile && yarn build
 # ARG GOOGLEMAP_API_KEY
 #ENV TESTING $GOOGLEMAP_API_KEY
 # RUN echo GOOGLEMAP_API_KEY=$GOOGLEMAP_API_KEY > .env
