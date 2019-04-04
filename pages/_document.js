@@ -20,6 +20,8 @@ export default class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#da532c" />
           <meta name="theme-color" content="#000000" />
 
+          <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
           {/* <meta name="google-site-verification" content="2p3xIPpK6em68IB4u-Qq2J7rlo2sbvolhjNl6PR8VXA" /> */}
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {/* <meta name="description" content="โครงการที่รณรงค์ให้นิสิตปัจจุบัน นิสิตเก่า คณาจารย์ และบุคลากร ของ จุฬาลงกรณ์มหาวิทยาลัย ร่วมกันบริจาคโลหิตให้แก่สภากาชาดไทย" /> */}
