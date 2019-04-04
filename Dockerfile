@@ -8,7 +8,7 @@ COPY . .
 
 # Building app
 RUN rm -rf node_modules/grpc
-RUN yarn install && yarn build
+RUN yarn add grpc && yarn build
 # ARG GOOGLEMAP_API_KEY
 #ENV TESTING $GOOGLEMAP_API_KEY
 # RUN echo GOOGLEMAP_API_KEY=$GOOGLEMAP_API_KEY > .env
