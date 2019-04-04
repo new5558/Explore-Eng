@@ -7,7 +7,7 @@ WORKDIR .
 COPY . .
 
 # Building app
-RUN yarn build
+RUN npm rebuild && yarn build
 # ARG GOOGLEMAP_API_KEY
 #ENV TESTING $GOOGLEMAP_API_KEY
 # RUN echo GOOGLEMAP_API_KEY=$GOOGLEMAP_API_KEY > .env
