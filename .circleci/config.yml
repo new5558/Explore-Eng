@@ -12,9 +12,9 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
 
-      - restore_cache: # special step to restore the dependency cache
+      # - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-          keys: 
+          # keys: 
             # - dependency-cache-{{ checksum "yarn.lock" }}
             # - dependency-cache-
 
