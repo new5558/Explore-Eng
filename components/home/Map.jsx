@@ -31,8 +31,8 @@ export default class extends Component {
     this.state = {
       currentLattitude: null,
       currentLongtitude: null,
-      centerLattitude: 13.75398,
-      centerLongtitude: 100.50144,
+      centerLattitude: null,
+      centerLongtitude: null,
       currentZoom: 15,
       isClickedCircleBtn: false,
       marker: null,
@@ -51,10 +51,7 @@ export default class extends Component {
   }
 
   setCenterLocation = (latitude, longitude) => {
-    this.setState({ centerLattitude: latitude, centerLongtitude: longitude })
-    this.setState({
-      currentZoom: 15,
-    });
+    this.setState({ centerLattitude: latitude, centerLongtitude: longitude, currentZoom: 15, })
   }
 
   getAndSetCurrentLocation = () => {
@@ -63,23 +60,34 @@ export default class extends Component {
     }, console.log);
   }
 
-  getAndSetCenterLocation = () => {
-    this.getLocation((position) => this.setCenterLocation(position.coords.latitude, position.coords.longitude), console.log);
-  }
-
   componentWillMount() {
     this.getDataFromFireBase('place', 'marker')
       .then((marker) => this.setState({ marker }));
   }
 
   componentDidMount() {
-    this.getLocation(position => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      this.setState(prevState => ({
-        centerLattitude: prevState.centerLattitude * 1.00001,
-      }), this.setCenterLocation(latitude, longitude))
-    }, console.log)
+    this.getLocation(
+      position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        // console.log("prepare to set center location")
+        // this.setCenterLocation(latitude, longitude);
+        this.setState({
+          currentLattitude: latitude,
+          currentLongtitude: longitude,
+          centerLattitude: latitude,
+          centerLongtitude: longitude,
+          currentZoom: 15,
+        })
+      },
+      () => {
+        this.setState({
+          centerLattitude: 13.75398,
+          centerLongtitude: 100.50144,
+          currentZoom: 15,
+        })
+      }
+    );
     this.getAndSetCurrentLocation();
     setInterval(() => {
       this.getAndSetCurrentLocation();
@@ -87,7 +95,6 @@ export default class extends Component {
   }
 
   getDataFromFireBase = (col, doc) => {
-    console.log('firebase called')
     const db = firebase.firestore();
     const marker = db.collection(col).doc(doc);
     return marker.get()
@@ -97,7 +104,7 @@ export default class extends Component {
   generateMarker = () => {
     const marker = this.state.marker
     let setOfmarkerComponent = [];
-    for(const key in marker) {
+    for (const key in marker) {
       setOfmarkerComponent.push(
         <Marker
           key={key}
@@ -113,21 +120,25 @@ export default class extends Component {
   render() {
     return (
       // Important! Always set the container height explicitly
-      <div style={{ height: '100vh', width: '100%' }}>
+      <div style={{ height: '100vh', width: '100%' }} >
         <GoogleMapReact
           bootstrapURLKeys={{ key: this.props.apiKey }}
           defaultZoom={this.props.zoom}
           zoom={this.state.currentZoom}
           options={this.props.createMapOptions}
           center={{ lat: this.state.centerLattitude, lng: this.state.centerLongtitude }}
-          onChange={({ zoom }) => this.setState({
-            currentZoom: zoom,
-          })}
-          onDrag={() => this.setState({
-            isClickedCircleBtn: false,
-          })}
+        // onGoogleApiLoaded={() => this.setState({
+        //   mapApiLoaded: true,
+        //   center: { lat: 13.75398, lng: 100.50144}
+        // })}
+        onChange={({ zoom }) => this.setState({
+          currentZoom: zoom,
+        })}
+        onDrag={() => this.setState({
+          isClickedCircleBtn: false,
+        })}
         >
-        {this.generateMarker()}
+          {this.generateMarker()}
           <CurrentLocation
             zoom={this.state.currentZoom}
             lat={this.state.currentLattitude}
