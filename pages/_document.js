@@ -18,7 +18,9 @@ export default class MyDocument extends Document {
           <meta name="apple-mobile-web-app-title" content="Test" />
           <meta name="application-name" content="Test" />
           <meta name="msapplication-TileColor" content="#da532c" />
-          <meta name="theme-color" content="#ffffff" />
+          <meta name="theme-color" content="rgba(0, 0, 0, 0)" />
+
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
           {/* <meta name="google-site-verification" content="2p3xIPpK6em68IB4u-Qq2J7rlo2sbvolhjNl6PR8VXA" /> */}
           <meta name="viewport" content="width=device-width, initial-scale=1" />
