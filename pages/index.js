@@ -72,10 +72,6 @@ class App extends Component {
       })
   }
 
-  // componentDidUpdate() {
-  //   console.log(this.state)
-  // }
-
   setCurrentLocation = (lat, lng) => {
     this.setState({
       currentLocation: { currentLatitude: lat, currentLongtitude: lng },
