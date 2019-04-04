@@ -23,7 +23,9 @@ class App extends Component {
         currentLatitude: null,
         currentLongtitude: null,
       },
-      isSearching: false
+      isSearching: false,
+      centerLattitude: null,
+      centerLongtitude: null,
     }
   }
 
@@ -51,6 +53,16 @@ class App extends Component {
     })
   }
 
+  goToPlace = (e) => {
+    const target = e.target;
+    this.setState({
+      searchValue: "",
+      isSearching: false,
+      dataFromSearch: [],
+    }, () => this.setCenterLocation(Number(target.dataset.latitude), Number(target.dataset.longtitude))
+    );
+  }
+
   searchLocation = (value) => {
     textSearch(
       // {
@@ -71,7 +83,7 @@ class App extends Component {
             const location = place.geometry.location;
             return {
               name: place.name,
-              lattitude: location.lat(),
+              latitude: location.lat(),
               longtitude: location.lng(),
             }
           })
@@ -86,6 +98,15 @@ class App extends Component {
     })
   }
 
+  setCenterLocation = (latitude, longitude, callBack) => {
+    console.log('prepare to set state', latitude, longitude)
+    this.setState({
+      currentZoom: 15,
+      centerLattitude: latitude,
+      centerLongtitude: longitude,
+    }, callBack)
+  }
+
   render() {
     return (
       <div className="h-full">
@@ -95,7 +116,7 @@ class App extends Component {
         {
           this.state.isSearching
             ?
-            <SearchResult data={this.state.dataFromSearch} />
+            <SearchResult goToPlace={this.goToPlace} data={this.state.dataFromSearch} />
             :
             <React.Fragment />
         }
@@ -106,6 +127,9 @@ class App extends Component {
           currentLongtitude={this.state.currentLocation.currentLongtitude}
           apiKey={this.props.env}
           apiIsLoaded={this.apiIsLoaded}
+          centerLattitude={this.state.centerLattitude}
+          centerLongtitude={this.state.centerLongtitude}
+          setCenterLocation={this.setCenterLocation}
         />
       </div>
     );

@@ -29,8 +29,6 @@ export default class extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      centerLattitude: null,
-      centerLongtitude: null,
       currentZoom: 15,
       isClickedCircleBtn: false,
       marker: null,
@@ -48,8 +46,8 @@ export default class extends Component {
     this.setState({ currentAccuracy: accuracy }, this.props.setCurrentLocation(latitude, longitude))
   }
 
-  setCenterLocation = (latitude, longitude) => {
-    this.setState({ currentZoom: 15 }, this.props.setCurrentLocation(latitude, longitude))
+  setCenterLocation = (latitude, longitude, callBack) => {
+    this.props.setCenterLocation(latitude, longitude, callBack)
   }
 
   getAndSetCurrentLocation = () => {
@@ -70,18 +68,12 @@ export default class extends Component {
         const longitude = position.coords.longitude;
         // console.log("prepare to set center location")
         // this.setCenterLocation(latitude, longitude);
-        this.setState({
-          centerLattitude: latitude,
-          centerLongtitude: longitude,
-          currentZoom: 15,
-        }, this.props.setCurrentLocation(latitude, longitude))
+        this.setCenterLocation(latitude, longitude,
+          () => this.props.setCurrentLocation(latitude, longitude)
+        )
       },
       () => {
-        this.setState({
-          centerLattitude: 13.75398,
-          centerLongtitude: 100.50144,
-          currentZoom: 15,
-        })
+        this.setCenterLocation(13.75398, 100.50144)
       }
     );
     this.getAndSetCurrentLocation();
@@ -114,7 +106,8 @@ export default class extends Component {
   }
 
   render() {
-    const { apiIsLoaded, isHidden, currentLongtitude, currentLatitude } = this.props;
+    const { apiIsLoaded, isHidden, currentLongtitude, currentLatitude, centerLattitude, centerLongtitude } = this.props;
+    console.log(centerLattitude, centerLongtitude, 'lat lng')
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }} className={isHidden ? "hidden" : ""} >
@@ -123,7 +116,7 @@ export default class extends Component {
           defaultZoom={this.props.zoom}
           zoom={this.state.currentZoom}
           options={this.props.createMapOptions}
-          center={{ lat: this.state.centerLattitude, lng: this.state.centerLongtitude }}
+          center={{ lat: centerLattitude, lng: centerLongtitude }}
           onChange={({ zoom }) => this.setState({
             currentZoom: zoom,
           })}
@@ -145,10 +138,9 @@ export default class extends Component {
           this.getLocation(position => {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
-            this.setState(prevState => ({
-              centerLattitude: prevState.centerLattitude * 1.00001,
+            this.setState({
               isClickedCircleBtn: true,
-            }), this.setCenterLocation(latitude, longitude))
+            }, () => this.setCenterLocation(latitude * ((latitude === this.props.centerLattitude && longitude === this.props.centerLongtitude) ? 1.00001 : 1), longitude))
           }, console.log)
         }}>
           <CircleBtn isClicked={this.state.isClickedCircleBtn}>
