@@ -49,11 +49,13 @@ export default class extends Component {
 
   setCenterLocation = (latitude, longitude) => {
     this.setState({ centerLattitude: latitude, centerLongtitude: longitude })
+    this.setState({
+      currentZoom: 15,
+    });
   }
 
   getAndSetCurrentLocation = () => {
     this.getLocation((position) => {
-      console.log(position)
       this.setCurrentLocation(position.coords.latitude, position.coords.longitude, position.coords.accuracy)
     }, console.log);
   }
@@ -77,7 +79,8 @@ export default class extends Component {
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: this.props.apiKey }}
-          defaultZoom={this.props.zoom}
+          defaultZoom={this.state.currentZoom}
+          zoom={this.state.currentZoom}
           options={this.props.createMapOptions}
           center={{ lat: this.state.centerLattitude, lng: this.state.centerLongtitude }}
           onChange={({ zoom }) => this.setState({ currentZoom: zoom })}
