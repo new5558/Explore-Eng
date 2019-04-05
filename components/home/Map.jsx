@@ -105,7 +105,8 @@ export default class extends Component {
   }
 
   render() {
-    const { apiIsLoaded, isHidden, currentLongtitude, currentLatitude, centerLattitude, centerLongtitude } = this.props;
+    const { apiIsLoaded, isHidden, currentLongtitude, currentLatitude, centerLattitude, centerLongtitude, currentMarkerLatitude, currentMarkerLongtitude } = this.props;
+    console.log(currentMarkerLatitude, currentMarkerLongtitude, 'current Marker')
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }} className={isHidden ? "hidden" : ""} >
@@ -132,6 +133,10 @@ export default class extends Component {
             lat={currentLatitude}
             lng={currentLongtitude}
             acc={this.state.currentAccuracy}
+          />
+          <Marker
+            lat={currentMarkerLatitude}
+            lng={currentMarkerLongtitude}
           />
         </GoogleMapReact>
         <div className="fixed z-50 pin-b pin-r mr-4 mb-8" onClick={() => {

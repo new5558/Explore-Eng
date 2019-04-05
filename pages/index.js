@@ -27,6 +27,10 @@ class App extends Component {
       centerLattitude: null,
       centerLongtitude: null,
       currentZoom: 15,
+      currentmarkerLocation: {
+        latitude: null,
+        longtitude: null,
+      },
     }
   }
 
@@ -58,10 +62,16 @@ class App extends Component {
 
   goToPlace = (e) => {
     const target = e.target;
+    const latitude = target.dataset.latitude - 0;
+    const longtitude = target.dataset.longtitude - 0;
     this.setState({
       isSearching: false,
       dataFromSearch: [],
-    }, () => this.setCenterLocation(Number(target.dataset.latitude), Number(target.dataset.longtitude), null, 16)
+      currentmarkerLocation: {
+        latitude: latitude,
+        longtitude: longtitude,
+      }
+    }, () => this.setCenterLocation(latitude, longtitude, null, 16)
     );
   }
 
@@ -146,6 +156,8 @@ class App extends Component {
           setCenterLocation={this.setCenterLocation}
           setZoom={this.setZoom}
           currentZoom={this.state.currentZoom}
+          currentMarkerLatitude={this.state.currentmarkerLocation.latitude}
+          currentMarkerLongtitude={this.state.currentmarkerLocation.longtitude}
         />
       </div>
     );
