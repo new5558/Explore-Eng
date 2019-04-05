@@ -3,10 +3,6 @@ html
   -webkit-tap-highlight-color:transparent;
 }
 
-body {
-  overflow: hidden;
-}
-
 .gm-style-pbc{
   display: none !important
 }
