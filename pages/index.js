@@ -59,7 +59,6 @@ class App extends Component {
   goToPlace = (e) => {
     const target = e.target;
     this.setState({
-      searchValue: "",
       isSearching: false,
       dataFromSearch: [],
     }, () => this.setCenterLocation(Number(target.dataset.latitude), Number(target.dataset.longtitude), null, 17)
