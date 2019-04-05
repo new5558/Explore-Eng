@@ -4,6 +4,7 @@ import SearchBar from '../components/home/SearchBar';
 import SearchResult from '../components/home/SearchResult';
 import '../util/tw.css';
 import '../static/css/body.css'
+import { CloseIcon } from '../components/shared-components/Icons';
 
 const key = process.env.GOOGLEMAP_API_KEY;
 let textSearch = null;
@@ -90,9 +91,8 @@ class App extends Component {
     const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
 
     // Checks if should display install popup notification:
-    console.log(isIos(), isInStandaloneMode(), 'boolean');
     if (isIos() && !isInStandaloneMode()) {
-      this.setState({ showIosInstallMessage: true });
+      setTimeout(() => this.setState({ showIosInstallMessage: true }), 3000) ;
     }
   }
 
@@ -192,15 +192,22 @@ class App extends Component {
           currentMarkerLongtitude={this.state.currentmarkerLocation.longtitude}
           clickCircleBtn={this.clickCircleBtn}
           isClickedCircleBtn={this.state.isClickedCircleBtn}
+          showIosInstallMessage={this.state.showIosInstallMessage}
         />
         {
           this.state.showIosInstallMessage ?
             (
-              <div className="fixed pin-t pin-l z-50 mx-auto w-full h-full text-white" style={{backgroundColor: "rgba(0, 0, 0, 0.5)"}}>
-                Please Install the 0
-                Click the share icon in the browser
+              <div className="fixed pin-t pin-l z-50 mx-auto w-full h-full text-white text-lg flex flex-col justify-between items-center px-3 py-4" style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}>
+                <div className="fixed pin-t pin-r">
+                  <CloseIcon className="w-12 h-12" fill="#FFFFFF" onClick={() => this.setState({showIosInstallMessage: false})}/>
+                </div>
+                <span className="text-2xl mt-3">
+                  Please Install the App
+                </span>
                 <img src="../static/image/ios_share_1.png" />
-                Select the option 'Add to Home Screen'       
+                <span>
+                  Select the option 'Add to Home Screen'
+                </span>
                 <img src="../static/image/ios_share_2.png" />
               </div>
             )

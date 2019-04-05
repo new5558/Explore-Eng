@@ -60,6 +60,7 @@ export default class extends Component {
   }
 
   componentDidMount() {
+    if(this.props.showIosInstallMessage) return;
     this.getLocation(
       position => {
         const latitude = position.coords.latitude;
@@ -150,7 +151,7 @@ export default class extends Component {
               ?
               (
                 <Marker
-                  type={0}
+                  type={1}
                   lat={currentMarkerLatitude}
                   lng={currentMarkerLongtitude}
                 />
