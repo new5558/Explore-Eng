@@ -29,7 +29,6 @@ export default class extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isClickedCircleBtn: false,
       marker: null,
     }
   }
@@ -78,7 +77,7 @@ export default class extends Component {
     this.getAndSetCurrentLocation();
     setInterval(() => {
       this.getAndSetCurrentLocation();
-      this.state.isClickedCircleBtn && this.getLocation(
+      this.props.isClickedCircleBtn && this.getLocation(
         position => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
@@ -119,8 +118,8 @@ export default class extends Component {
   }
 
   render() {
-    const { apiIsLoaded, isHidden, currentLongtitude, currentLatitude, centerLattitude, centerLongtitude, currentMarkerLatitude, currentMarkerLongtitude } = this.props;
-    console.log(currentMarkerLatitude, currentMarkerLongtitude, 'current Marker')
+    const { apiIsLoaded, isHidden, currentLongtitude, currentLatitude, centerLattitude, centerLongtitude, currentMarkerLatitude, currentMarkerLongtitude, clickCircleBtn } = this.props;
+    // console.log(currentMarkerLatitude, currentMarkerLongtitude, 'current Marker')
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }} className={isHidden ? "hidden" : ""} >
@@ -134,9 +133,7 @@ export default class extends Component {
             this.props.setZoom(zoom)
           }}
           onDrag={() => {
-            this.setState({
-              isClickedCircleBtn: false,
-            })
+            clickCircleBtn(false);
           }}
           yesIWantToUseGoogleMapApiInternals
           onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps)}
@@ -165,12 +162,10 @@ export default class extends Component {
           this.getLocation(position => {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
-            this.setState({
-              isClickedCircleBtn: true,
-            }, () => this.setCenterLocation(latitude * ((latitude === this.props.centerLattitude && longitude === this.props.centerLongtitude) ? 1.00001 : 1), longitude))
+            this.setCenterLocation(latitude * ((latitude === this.props.centerLattitude && longitude === this.props.centerLongtitude) ? 1.00001 : 1), longitude, clickCircleBtn)
           }, console.log)
         }}>
-          <CircleBtn isClicked={this.state.isClickedCircleBtn}>
+          <CircleBtn isClicked={this.props.isClickedCircleBtn}>
             <div className="w-8 h-8" >
               <LocationIcon fill="white" />
             </div>

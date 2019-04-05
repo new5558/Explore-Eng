@@ -31,6 +31,7 @@ class App extends Component {
         latitude: null,
         longtitude: null,
       },
+      isClickedCircleBtn: false,
     }
   }
 
@@ -70,7 +71,8 @@ class App extends Component {
       currentmarkerLocation: {
         latitude: latitude,
         longtitude: longtitude,
-      }
+      },
+      isClickedCircleBtn: false,
     }, () => this.setCenterLocation(latitude, longtitude, null, 16)
     );
   }
@@ -136,8 +138,10 @@ class App extends Component {
     })
   }
 
-  componentDidUpdate() {
-    console.log(this.state)
+  clickCircleBtn = (value = true) => {
+    this.setState({
+      isClickedCircleBtn: value,
+    });
   }
 
   render() {
@@ -167,6 +171,8 @@ class App extends Component {
           currentZoom={this.state.currentZoom}
           currentMarkerLatitude={this.state.currentmarkerLocation.latitude}
           currentMarkerLongtitude={this.state.currentmarkerLocation.longtitude}
+          clickCircleBtn={this.clickCircleBtn}
+          isClickedCircleBtn={this.state.isClickedCircleBtn}
         />
       </div>
     );
