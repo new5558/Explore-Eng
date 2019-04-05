@@ -78,6 +78,20 @@ export default class extends Component {
     this.getAndSetCurrentLocation();
     setInterval(() => {
       this.getAndSetCurrentLocation();
+      this.state.isClickedCircleBtn && this.getLocation(
+        position => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          // console.log("prepare to set center location")
+          // this.setCenterLocation(latitude, longitude);
+          this.setCenterLocation(latitude, longitude,
+            () => this.props.setCurrentLocation(latitude, longitude)
+          )
+        },
+        () => {
+          // this.setCenterLocation(13.75398, 100.50144)
+        }
+      );
     }, 5000);
   }
 
