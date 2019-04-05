@@ -161,7 +161,7 @@ export default class extends Component {
           }
         </GoogleMapReact>
         <div className="fixed z-50 pin-b pin-r mr-4 mb-8" onClick={() => {
-          this.setCenterLocation(currentLatitude * ((currentLatitude === this.props.centerLattitude && currentLongtitude === this.props.centerLongtitude) ? 1.00001 : 1), currentLongtitude, clickCircleBtn)
+          this.setCenterLocation(currentLatitude * ((currentLatitude === this.props.centerLattitude && currentLongtitude === this.props.centerLongtitude) ? 1.000001 : 1), currentLongtitude, clickCircleBtn)
         }}>
           <CircleBtn isClicked={this.props.isClickedCircleBtn}>
             <div className="w-8 h-8" >
