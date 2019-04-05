@@ -37,7 +37,7 @@ class App extends Component {
   onSearchChange = (e) => {
     const target = e.target;
     const value = target.value;
-    if(value === "") {
+    if (value === "") {
       target.blur();
     }
     this.setState({
@@ -73,6 +73,18 @@ class App extends Component {
       }
     }, () => this.setCenterLocation(latitude, longtitude, null, 16)
     );
+  }
+
+  onSearchOpen = () => {
+    this.setState(prevState => ({
+      isSearching: true,
+      searchValue: prevState.isSearching ? prevState.searchValue : "",
+      currentmarkerLocation: {
+        latitude: null,
+        longitude: null,
+      }
+    })
+    )
   }
 
   searchLocation = (value) => {
@@ -123,12 +135,9 @@ class App extends Component {
       currentZoom: zoomLevel
     })
   }
-  
-  onSearchOpen = () => {
-    console.log('onSearchOpen')
-    this.setState({
-      isSearching: true,
-    })
+
+  componentDidUpdate() {
+    console.log(this.state)
   }
 
   render() {

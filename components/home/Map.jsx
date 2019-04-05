@@ -134,10 +134,18 @@ export default class extends Component {
             lng={currentLongtitude}
             acc={this.state.currentAccuracy}
           />
-          <Marker
-            lat={currentMarkerLatitude}
-            lng={currentMarkerLongtitude}
-          />
+          {
+            currentMarkerLatitude
+              ?
+              (
+                <Marker
+                  lat={currentMarkerLatitude}
+                  lng={currentMarkerLongtitude}
+                />
+              )
+              :
+              null
+          }
         </GoogleMapReact>
         <div className="fixed z-50 pin-b pin-r mr-4 mb-8" onClick={() => {
           this.getLocation(position => {
