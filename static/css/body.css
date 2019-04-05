@@ -6,3 +6,7 @@ html
 body {
   overflow: auto;
 }
+
+.gm-style-pbc{
+  display: none !important
+}
