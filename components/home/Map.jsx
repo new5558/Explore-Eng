@@ -119,7 +119,6 @@ export default class extends Component {
             this.props.setZoom(zoom)
           }}
           onDrag={() => {
-            this.refs.input.blur();
             this.setState({
               isClickedCircleBtn: false,
             })

@@ -33,6 +33,9 @@ class App extends Component {
   onSearchChange = (e) => {
     const target = e.target;
     const value = target.value;
+    if(value === "") {
+      target.blur();
+    }
     this.setState({
       searchValue: value,
       isSearching: !(value === ""),
