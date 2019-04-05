@@ -102,7 +102,7 @@ export default class extends Component {
       .then(result => result.data());
   }
 
-  generateMarker = () => {
+  generateMarker = (openPopup) => {
     const marker = this.state.marker
     let setOfmarkerComponent = [];
     for (const key in marker) {
@@ -111,7 +111,9 @@ export default class extends Component {
           key={key}
           lat={marker[key].latitude}
           lng={marker[key].longitude}
-          text={key}
+          name={key}
+          picture={marker[key].picture}
+          onClick={openPopup}
         />
       )
     }
@@ -119,8 +121,8 @@ export default class extends Component {
   }
 
   render() {
-    const { apiIsLoaded, isHidden, currentLongtitude, currentLatitude, centerLattitude, centerLongtitude, currentMarkerLatitude, currentMarkerLongtitude, clickCircleBtn } = this.props;
-    // console.log(currentMarkerLatitude, currentMarkerLongtitude, 'current Marker')
+    const { apiIsLoaded, isHidden, currentLongitude, currentLatitude, centerLattitude, centerLongitude, currentMarkerLatitude, currentMarkerLongitude, clickCircleBtn, openPopup } = this.props;
+    // console.log(currentMarkerLatitude, currentMarkerlongitude, 'current Marker')
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }} className={isHidden ? "hidden" : ""} >
@@ -129,7 +131,7 @@ export default class extends Component {
           defaultZoom={this.props.zoom}
           zoom={this.props.currentZoom}
           options={this.props.createMapOptions}
-          center={{ lat: centerLattitude, lng: centerLongtitude }}
+          center={{ lat: centerLattitude, lng: centerLongitude }}
           onChange={({ zoom }) => {
             this.props.setZoom(zoom)
           }}
@@ -139,11 +141,11 @@ export default class extends Component {
           yesIWantToUseGoogleMapApiInternals
           onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps)}
         >
-          {this.generateMarker()}
+          {this.generateMarker(openPopup)}
           <CurrentLocation
             zoom={this.props.currentZoom}
             lat={currentLatitude}
-            lng={currentLongtitude}
+            lng={currentLongitude}
             acc={this.state.currentAccuracy}
           />
           {
@@ -153,15 +155,15 @@ export default class extends Component {
                 <Marker
                   type={1}
                   lat={currentMarkerLatitude}
-                  lng={currentMarkerLongtitude}
+                  lng={currentMarkerLongitude}
                 />
               )
               :
               null
           }
         </GoogleMapReact>
-        <div className="fixed z-50 pin-b pin-r mr-4 mb-8" onClick={() => {
-          this.setCenterLocation(currentLatitude * ((currentLatitude === this.props.centerLattitude && currentLongtitude === this.props.centerLongtitude) ? 1.000001 : 1), currentLongtitude, clickCircleBtn)
+        <div className="fixed z-40 pin-b pin-r mr-4 mb-8" onClick={() => {
+          this.setCenterLocation(currentLatitude * ((currentLatitude === this.props.centerLattitude && currentLongitude === this.props.centerLongitude) ? 1.000001 : 1), currentLongitude, clickCircleBtn)
         }}>
           <CircleBtn isClicked={this.props.isClickedCircleBtn}>
             <div className="w-8 h-8" >

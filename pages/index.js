@@ -5,6 +5,7 @@ import SearchResult from '../components/home/SearchResult';
 import '../util/tw.css';
 import '../static/css/body.css'
 import { CloseIcon } from '../components/shared-components/Icons';
+import Popup from '../components/home/Popup';
 
 const key = process.env.GOOGLEMAP_API_KEY;
 let textSearch = null;
@@ -23,18 +24,24 @@ class App extends Component {
       dataFromSearch: [],
       currentLocation: {
         currentLatitude: null,
-        currentLongtitude: null,
+        currentLongitude: null,
       },
       isSearching: false,
       centerLattitude: null,
-      centerLongtitude: null,
+      centerLongitude: null,
       currentZoom: 15,
       currentmarkerLocation: {
         latitude: null,
-        longtitude: null,
+        longitude: null,
       },
       isClickedCircleBtn: false,
       showIosInstallMessage: false,
+      isPopupPresent: false,
+      popup: {
+        name: null,
+        latitude: null,
+        longitude: null,
+      }
     }
   }
 
@@ -66,17 +73,18 @@ class App extends Component {
 
   goToPlace = (e) => {
     const target = e.target;
+    console.log(target.dataset, 'another dataset')
     const latitude = target.dataset.latitude - 0;
-    const longtitude = target.dataset.longtitude - 0;
+    const longitude = target.dataset.longitude - 0;
     this.setState({
       isSearching: false,
       dataFromSearch: [],
       currentmarkerLocation: {
         latitude: latitude,
-        longtitude: longtitude,
+        longitude: longitude,
       },
       isClickedCircleBtn: false,
-    }, () => this.setCenterLocation(latitude, longtitude, null, 16)
+    }, () => this.setCenterLocation(latitude, longitude, null, 16)
     );
   }
 
@@ -116,7 +124,7 @@ class App extends Component {
       // }
       {
         query: value,
-        location: new google.maps.LatLng(this.state.currentLocation.currentLatitude, this.state.currentLocation.currentLongtitude),
+        location: new google.maps.LatLng(this.state.currentLocation.currentLatitude, this.state.currentLocation.currentLongitude),
         radius: '10000',
         // types: ['store']
       }
@@ -129,7 +137,7 @@ class App extends Component {
             return {
               name: place.name,
               latitude: location.lat(),
-              longtitude: location.lng(),
+              longitude: location.lng(),
             }
           })
         }
@@ -139,7 +147,7 @@ class App extends Component {
 
   setCurrentLocation = (lat, lng) => {
     this.setState({
-      currentLocation: { currentLatitude: lat, currentLongtitude: lng },
+      currentLocation: { currentLatitude: lat, currentLongitude: lng },
     })
   }
 
@@ -147,7 +155,7 @@ class App extends Component {
     this.setState({
       currentZoom: zoom,
       centerLattitude: latitude,
-      centerLongtitude: longitude,
+      centerLongitude: longitude,
     }, callBack)
   }
 
@@ -163,10 +171,51 @@ class App extends Component {
     });
   }
 
+  openPopup = (e) => {
+    if (!e) return;
+    const target = e.target;
+    const name = target.dataset.name;
+    const picture = target.dataset.picture;
+    const latitude = target.dataset.latitude;
+    const longitude = target.dataset.longitude;
+    this.setState({
+      isPopupPresent: true,
+      popup: {
+        picture,
+        name,
+        latitude,
+        longitude
+      }
+    })
+  }
+
+  closePopup = () => {
+    this.setState({
+      isPopupPresent: false,
+      popup: {
+        picture: null,
+        name: null,
+        latitude: null,
+        longitude: null,
+      }
+    })
+  }
+
+  openInMaps = () => {
+    const { latitude, longitude } = this.state.popup;
+    if /* if we're on iOS, open in Apple Maps */
+      ((navigator.platform.indexOf("iPhone") != -1) ||
+      (navigator.platform.indexOf("iPad") != -1) ||
+      (navigator.platform.indexOf("iPod") != -1))
+      window.open("maps://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=");
+    else /* else use Google */
+      window.open("https://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=");
+  }
+
   render() {
     return (
       <div className="h-full">
-        <div className="fixed h-16 px-3 pin-t pin-l w-full z-50 flex flex-col items-center justify-center">
+        <div className="fixed h-16 px-3 pin-t pin-l w-full z-40 flex flex-col items-center justify-center">
           <SearchBar onClick={this.onSearchOpen} isSearching={this.state.isSearching} closeSearch={this.closeSearch} value={this.state.searchValue} onChange={this.onSearchChange} />
         </div>
         {
@@ -180,20 +229,22 @@ class App extends Component {
           isHidden={this.state.isSearching}
           setCurrentLocation={this.setCurrentLocation}
           currentLatitude={this.state.currentLocation.currentLatitude}
-          currentLongtitude={this.state.currentLocation.currentLongtitude}
+          currentLongitude={this.state.currentLocation.currentLongitude}
           apiKey={this.props.env}
           apiIsLoaded={this.apiIsLoaded}
           centerLattitude={this.state.centerLattitude}
-          centerLongtitude={this.state.centerLongtitude}
+          centerLongitude={this.state.centerLongitude}
           setCenterLocation={this.setCenterLocation}
           setZoom={this.setZoom}
           currentZoom={this.state.currentZoom}
           currentMarkerLatitude={this.state.currentmarkerLocation.latitude}
-          currentMarkerLongtitude={this.state.currentmarkerLocation.longtitude}
+          currentMarkerLongitude={this.state.currentmarkerLocation.longitude}
           clickCircleBtn={this.clickCircleBtn}
           isClickedCircleBtn={this.state.isClickedCircleBtn}
           showIosInstallMessage={this.state.showIosInstallMessage}
+          openPopup={this.openPopup}
         />
+        <Popup isPopupPresent={this.state.isPopupPresent} name={this.state.popup.name} picture={this.state.popup.picture} closePopup={this.closePopup} openInMaps={this.openInMaps} />
         {
           this.state.showIosInstallMessage ?
             (
