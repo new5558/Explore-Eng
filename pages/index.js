@@ -61,7 +61,7 @@ class App extends Component {
     this.setState({
       isSearching: false,
       dataFromSearch: [],
-    }, () => this.setCenterLocation(Number(target.dataset.latitude), Number(target.dataset.longtitude), null, 17)
+    }, () => this.setCenterLocation(Number(target.dataset.latitude), Number(target.dataset.longtitude), null, 16)
     );
   }
 
