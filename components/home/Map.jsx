@@ -150,6 +150,7 @@ export default class extends Component {
               ?
               (
                 <Marker
+                  type={0}
                   lat={currentMarkerLatitude}
                   lng={currentMarkerLongtitude}
                 />
