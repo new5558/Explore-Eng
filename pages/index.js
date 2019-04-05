@@ -113,12 +113,19 @@ class App extends Component {
       currentZoom: zoomLevel
     })
   }
+  
+  onSearchOpen = () => {
+    console.log('onSearchOpen')
+    this.setState({
+      isSearching: true,
+    })
+  }
 
   render() {
     return (
       <div className="h-full">
         <div className="fixed h-16 px-3 pin-t pin-l w-full z-50 flex flex-col items-center justify-center">
-          <SearchBar isSearching={this.state.isSearching} closeSearch={this.closeSearch} value={this.state.searchValue} onChange={this.onSearchChange} />
+          <SearchBar onClick={this.onSearchOpen} isSearching={this.state.isSearching} closeSearch={this.closeSearch} value={this.state.searchValue} onChange={this.onSearchChange} />
         </div>
         {
           this.state.isSearching
