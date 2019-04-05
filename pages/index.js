@@ -3,6 +3,7 @@ import Map from '../components/home/Map'
 import SearchBar from '../components/home/SearchBar';
 import SearchResult from '../components/home/SearchResult';
 import '../util/tw.css';
+import '../static/css/body.css'
 
 const key = process.env.GOOGLEMAP_API_KEY;
 let textSearch = null;
