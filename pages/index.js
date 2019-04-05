@@ -33,6 +33,7 @@ class App extends Component {
         longtitude: null,
       },
       isClickedCircleBtn: false,
+      showIosInstallMessage: false,
     }
   }
 
@@ -76,6 +77,23 @@ class App extends Component {
       isClickedCircleBtn: false,
     }, () => this.setCenterLocation(latitude, longtitude, null, 16)
     );
+  }
+
+  componentDidMount() {
+    // Detects if device is on iOS 
+    const isIos = () => {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod/.test(userAgent);
+    }
+
+    // Detects if device is in standalone mode
+    const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+    // Checks if should display install popup notification:
+    console.log(isIos(), isInStandaloneMode(), 'boolean');
+    if (isIos() && !isInStandaloneMode()) {
+      this.setState({ showIosInstallMessage: true });
+    }
   }
 
   onSearchOpen = () => {
@@ -175,6 +193,20 @@ class App extends Component {
           clickCircleBtn={this.clickCircleBtn}
           isClickedCircleBtn={this.state.isClickedCircleBtn}
         />
+        {
+          this.state.showIosInstallMessage ?
+            (
+              <div className="fixed pin-t pin-l z-50 mx-auto w-full h-full text-white" style={{backgroundColor: "rgba(0, 0, 0, 0.5)"}}>
+                Please Install the 0
+                Click the share icon in the browser
+                <img src="../static/image/ios_share_1.png" />
+                Select the option 'Add to Home Screen'       
+                <img src="../static/image/ios_share_2.png" />
+              </div>
+            )
+            :
+            null
+        }
       </div>
     );
   }
