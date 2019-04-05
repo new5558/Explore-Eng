@@ -3,7 +3,7 @@ export default ({ isPopupPresent, name, picture, closePopup, openInMaps }) => {
     return isPopupPresent
         ?
         (
-            <div className="fixed pin-t pin-l flex items-center justify-center h-full w-full px-6">
+            <div className="fixed z-40 pin-t pin-l flex items-center justify-center h-full w-full px-6">
                 <div onClick={closePopup} className="bg-red fixed pin-t pin-l z-30 h-screen w-screen" style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}>
                     s
                 </div>
