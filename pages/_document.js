@@ -20,7 +20,9 @@ export default class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#da532c" />
           <meta name="theme-color" content="#ffffff" />
 
-          <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+          <meta name="apple-mobile-web-app-capable" content="yes"></meta>
+
+          {/* <meta name="apple-mobile-web-app-status-bar-style" content="black" /> */}
 
           {/* <meta name="google-site-verification" content="2p3xIPpK6em68IB4u-Qq2J7rlo2sbvolhjNl6PR8VXA" /> */}
           <meta name="viewport" content="width=device-width, initial-scale=1" />
