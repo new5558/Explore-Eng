@@ -92,7 +92,7 @@ class App extends Component {
 
     // Checks if should display install popup notification:
     if (isIos() && !isInStandaloneMode()) {
-      setTimeout(() => this.setState({ showIosInstallMessage: true }), 3000) ;
+      setTimeout(() => this.setState({ showIosInstallMessage: true }), 3000);
     }
   }
 
@@ -197,18 +197,22 @@ class App extends Component {
         {
           this.state.showIosInstallMessage ?
             (
-              <div className="fixed pin-t pin-l z-50 mx-auto w-full h-full text-white text-lg flex flex-col justify-between items-center px-3 py-4" style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}>
+              <div className="fixed pin-t pin-l z-50 mx-auto w-full h-full text-white text-lg flex flex-col justify-around items-center px-3 py-2" style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}>
                 <div className="fixed pin-t pin-r">
-                  <CloseIcon className="w-12 h-12" fill="#FFFFFF" onClick={() => this.setState({showIosInstallMessage: false})}/>
+                  <CloseIcon className="w-12 h-12" fill="#FFFFFF" onClick={() => this.setState({ showIosInstallMessage: false })} />
                 </div>
-                <span className="text-2xl mt-3">
-                  Please Install the App
+                <div className="flex flex-col items-center">
+                  <span className="text-2xl my-2">
+                    Please Install the App
                 </span>
-                <img src="../static/image/ios_share_1.png" />
-                <span>
-                  Select the option 'Add to Home Screen'
+                  <img src="../static/image/ios_share_1.png" className="w-64" />
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="my-2">
+                    Select the option 'Add to Home Screen'
                 </span>
-                <img src="../static/image/ios_share_2.png" />
+                  <img src="../static/image/ios_share_2.png" className="w-64" />
+                </div>
               </div>
             )
             :
