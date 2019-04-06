@@ -234,6 +234,7 @@ class App extends Component {
       if (choiceResult.outcome === 'accepted') {
         window.addEventListener('appinstalled', (evt) => {
           alert('app installed');
+          location.assign("/")
         });
       } 
       deferredPrompt = null;
