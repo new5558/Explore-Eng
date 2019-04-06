@@ -227,6 +227,19 @@ class App extends Component {
       window.open("https://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=");
   }
 
+  chromeInstall = () => {
+    deferredPrompt.prompt()
+    deferredPrompt.userChoice
+    .then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        window.addEventListener('appinstalled', (evt) => {
+          alert('app installed');
+        });
+      } 
+      deferredPrompt = null;
+    });
+  }
+
   render() {
     return (
       <div className="h-full">
@@ -296,7 +309,7 @@ class App extends Component {
                   <span className="text-2xl my-2">
                     Please Install the App
                   </span>
-                  <button className="bg-green text-xl rounded px-6 py-3 shadow text-white" onClick={() => deferredPrompt.prompt()}>
+                  <button className="bg-green text-xl rounded px-6 py-3 shadow text-white" onClick={this.chromeInstall}>
                     Install
                   </button>
                 </div>
