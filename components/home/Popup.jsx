@@ -7,9 +7,15 @@ export default ({ isPopupPresent, isFaddingOut, name, picture, closePopup, openI
                 </div>
                 <div className={"bg-white flex flex-col fixed z-40 " + ((isPopupPresent && !isFaddingOut)  ? "fadeIn animated" : "fadeOut animated")} style={{ borderRadius: "1rem" }}>
                     <ProgressiveImage src={picture} placeholder="../../static/image/placeholder.jpg">
-                        {src =>
-                            (
-                                <img style={{ borderTopLeftRadius: "1rem", borderTopRightRadius: "1rem", backgroundPosition: "center", backgroundSize: "cover", width: "300px", height: "200px"}} src={src}/>
+                        {(src, loading) =>
+                            (   
+                                <div className="flex justify-center items-center" style={{ width: "300px", height: "200px"}}>
+                                    <div className={"fixed z-50 " + (loading ? "lds-ripple" : "")}>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                    <img  style={{ borderTopLeftRadius: "1rem", borderTopRightRadius: "1rem", backgroundPosition: "center", backgroundSize: "cover", width: "300px", height: "200px"}} src={src}/>
+                                </div>
                             )
                         }
                     </ProgressiveImage>
