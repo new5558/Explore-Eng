@@ -1,6 +1,7 @@
 import React from 'react'
 import App, { Container } from 'next/app'
 import { MapIcon, PersonIcon } from '../components/shared-components/Icons';
+import Link from 'next/link'
 
 const Button = ({ text, textColor, onClick, children }) => {
     return (
@@ -15,37 +16,27 @@ const Button = ({ text, textColor, onClick, children }) => {
 
 class Layout extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state= {
-            currentMenu: 0,
-        }
-    }
-
-    componentDidMount() {
-        const { path } = this.props;
-        this.setState({
-            currentMenu: path === "/" ? 0 : 1,
-        })
-    }
-
     render() {
-        const { children } = this.props
-        const color1 = this.state.currentMenu === 0 ? "#DE5C8E" : "#636160";
-        const color2 = this.state.currentMenu === 0 ? "#636160" : "#DE5C8E";
+        const { children, path } = this.props
+        const color1 = path === "/" ? "#DE5C8E" : "#636160";
+        const color2 = path === "/" ? "#636160" : "#DE5C8E";
         return (
             <div className='layout'>
                 {children}
                 <div
                     className="fixed flex justify-around items-center pb-4 pt-2 pin-b pin-l w-screen h-24 bg-white shadow-md"
                     style={{ borderTopLeftRadius: "1rem", borderTopRightRadius: "1rem" }}
-                >
+                >   
+                <Link href="/">
                     <Button textColor={color1} text="Map">
                         <MapIcon fill={color1} />
                     </Button>
+                </Link>
+                <Link href="account">
                     <Button textColor={color2} text="Account">
                         <PersonIcon fill={color2} />
                     </Button>
+                </Link>
                 </div>
             </div>
         )

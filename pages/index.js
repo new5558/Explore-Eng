@@ -235,7 +235,7 @@ class App extends Component {
       if (choiceResult.outcome === 'accepted') {
         window.addEventListener('appinstalled', (event) => {
           // console.log(event, 'event')
-          this.setTimeout(window.open('https://dev.norapat.com'), 10000);
+          this.setTimeout(() => window.open('https://dev.norapat.com'), 10000);
         });
       } 
       deferredPrompt = null;
