@@ -42,5 +42,5 @@ jobs:
       - deploy:
           name: Deploy app to Digital Ocean Server via Docker
           command: |
-            ssh -o StrictHostKeyChecking=no $SSH_PATH "docker images -a | grep "$IMAGE_NAME" | awk '{print $3}' | xargs docker rmi && docker image pull $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID && docker run -e 'NODE_ENV=production' -e 'GOOGLEMAP_API_KEY=$GOOGLEMAP_API_KEY' -d -p 3000:3000 --name $IMAGE_NAME $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID"
+            ssh -o StrictHostKeyChecking=no $SSH_PATH "docker image pull $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID && docker rm $IMAGE_NAME -f && docker run -e 'NODE_ENV=production' -e 'GOOGLEMAP_API_KEY=$GOOGLEMAP_API_KEY' -d -p 3000:3000 --name $IMAGE_NAME $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID"
             # $SSH_PATH = root@norapat.com
