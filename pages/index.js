@@ -113,6 +113,11 @@ class App extends Component {
       setTimeout(() => this.setState({ showChromeInstallMessage: true }), 3000);
     });
 
+    window.onappinstalled = () => {
+      alert('app installed');
+      // window.open('https://dev.norapat.com')
+    }
+
   }
 
   onSearchOpen = () => {
@@ -217,7 +222,7 @@ class App extends Component {
   }
 
   openInMaps = () => {
-    window.open('https://dev.norapat.com')
+    // window.open('https://dev.norapat.com')
     const { latitude, longitude } = this.state.popup;
     if /* if we're on iOS, open in Apple Maps */
       ((navigator.platform.indexOf("iPhone") != -1) ||
@@ -233,7 +238,6 @@ class App extends Component {
     deferredPrompt.userChoice
     .then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
-        window.onappinstalled = () => alert('app installed');
         // window.addEventListener('appinstalled', (evt) => {
         //   // alert('app installed');
         //   window.open('https://dev.norapat.com')
