@@ -6,7 +6,7 @@ class Account extends Component {
 
     constructor(props) {
         super(props);
-        this.state ={
+        this.state = {
             debug: null,
         }
     }
@@ -22,11 +22,18 @@ class Account extends Component {
     render() {
         return (
             <div>
-                {this.state.debug}
-                <Camera
-                    onTakePhoto={(dataUri) => this.onTakePhoto(dataUri)}
-                    idealFacingMode={FACING_MODES.ENVIRONMENT}
-                />
+                {
+                    this.state.debug 
+                    ?
+                    this.state.debug
+                    :
+                    <Camera
+                        isImageMirror={false}
+                        imageCompression = {0.70}
+                        onTakePhoto={(dataUri) => this.onTakePhoto(dataUri)}
+                        idealFacingMode={FACING_MODES.ENVIRONMENT}
+                    />
+                }
             </div>
         )
     }
