@@ -112,11 +112,6 @@ class App extends Component {
       deferredPrompt = e;
       setTimeout(() => this.setState({ showChromeInstallMessage: true }), 3000);
     });
-
-    window.addEventListener('appinstalled', (event) => {
-      window.close();
-    });
-
   }
 
   onSearchOpen = () => {
@@ -237,10 +232,9 @@ class App extends Component {
     deferredPrompt.userChoice
     .then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
-        // window.addEventListener('appinstalled', (evt) => {
-        //   // alert('app installed');
-        //   window.open('https://dev.norapat.com')
-        // });
+        window.addEventListener('appinstalled', (event) => {
+          window.close();
+        });
       } 
       deferredPrompt = null;
     });
