@@ -10,7 +10,8 @@ export default ({ isPopupPresent, isFaddingOut, name, picture, closePopup, openI
                         {(src, loading) =>
                             (   
                                 <div className="flex justify-center items-center" style={{ width: "300px", height: "200px"}}>
-                                    <div className={"fixed z-50 " + (loading ? "lds-ripple" : "")}>
+                                    <div className={"fixed z-50 " + (loading ? "lds-facebook" : "")}>
+                                        <div></div>
                                         <div></div>
                                         <div></div>
                                     </div>
