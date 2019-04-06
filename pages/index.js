@@ -113,10 +113,9 @@ class App extends Component {
       setTimeout(() => this.setState({ showChromeInstallMessage: true }), 3000);
     });
 
-    window.onappinstalled = () => {
-      alert('app installed');
-      // window.open('https://dev.norapat.com')
-    }
+    window.addEventListener('appinstalled', (event) => {
+      console.log('👍', 'appinstalled', event);
+    });
 
   }
 
