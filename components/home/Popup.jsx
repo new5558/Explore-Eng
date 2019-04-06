@@ -7,7 +7,7 @@ export default ({ isPopupPresent, isFaddingOut, name, picture, closePopup, openI
             </div>
             <div className={"bg-white flex flex-col fixed z-40 " + ((isPopupPresent && !isFaddingOut) ? "fadeIn animated" : "fadeOut animated")} style={{ borderRadius: "1rem" }}>
                 {
-                    picture
+                    (picture || isPopupPresent)
                         ?
                         (
                             <ProgressiveImage src={picture} placeholder="../../static/image/placeholder.jpg">

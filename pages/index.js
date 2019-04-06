@@ -74,7 +74,6 @@ class App extends Component {
 
   goToPlace = (e) => {
     const target = e.target;
-    console.log(target.dataset, 'another dataset')
     const latitude = target.dataset.latitude - 0;
     const longitude = target.dataset.longitude - 0;
     this.setState({
