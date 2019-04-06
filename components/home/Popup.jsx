@@ -2,10 +2,8 @@ import ProgressiveImage from 'react-progressive-image';
 
 export default ({ isPopupPresent, name, picture, closePopup, openInMaps }) => {
     console.log(isPopupPresent, name, 'popup')
-    return isPopupPresent
-        ?
-        (
-            <div className="fixed z-40 pin-t pin-l flex items-center justify-center h-full w-full px-6">
+    return (
+            <div className={"fixed z-40 pin-t pin-l items-center justify-center h-full w-full px-6 " + (isPopupPresent ? "flex" : "hidden")}>
                 <div onClick={closePopup} className="bg-red fixed pin-t pin-l z-30 h-screen w-screen" style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}>
                 </div>
                 <div className="bg-white flex flex-col fixed z-40" style={{ borderRadius: "1rem" }}>
@@ -30,6 +28,4 @@ export default ({ isPopupPresent, name, picture, closePopup, openInMaps }) => {
                 </div>
             </div>
         )
-        :
-        null
 }
