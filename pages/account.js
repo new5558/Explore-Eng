@@ -13,7 +13,8 @@ class Account extends Component {
         return (
             <div>
                 <Camera
-                    onTakePhoto={(dataUri) => { this.onTakePhoto(dataUri); }}
+                    onTakePhoto={(dataUri) => this.onTakePhoto(dataUri)}
+                    idealFacingMode={FACING_MODES.ENVIRONMENT}
                 />
             </div>
         )
