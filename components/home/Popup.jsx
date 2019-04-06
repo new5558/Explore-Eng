@@ -25,7 +25,7 @@ export default ({ isPopupPresent, isFaddingOut, name, picture, closePopup, openI
                     </span>
                     <div className="flex justify-between">
                         <div className="text-center w-full py-2">
-                            Scan
+                            Drop-Off
                         </div>
                         <div onClick={openInMaps} className="text-center w-full py-2 text-blue">
                             Direction
