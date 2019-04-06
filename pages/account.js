@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Camera from 'react-html5-camera-photo';
+import Camera, { FACING_MODES } from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 
 class Account extends Component {
