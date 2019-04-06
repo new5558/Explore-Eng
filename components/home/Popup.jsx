@@ -8,13 +8,11 @@ export default ({ isPopupPresent, name, picture, closePopup, openInMaps }) => {
             <div className="fixed z-40 pin-t pin-l flex items-center justify-center h-full w-full px-6">
                 <div onClick={closePopup} className="bg-red fixed pin-t pin-l z-30 h-screen w-screen" style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}>
                 </div>
-                <div className="bg-white flex flex-col fixed z-40 shadow" style={{ borderRadius: "1rem" }}>
+                <div className="bg-white flex flex-col fixed z-40" style={{ borderRadius: "1rem" }}>
                     <ProgressiveImage src={picture} placeholder="../../static/image/placeholder.jpg">
                         {src =>
                             (
                                 <img style={{ borderTopLeftRadius: "1rem", borderTopRightRadius: "1rem", backgroundPosition: "center", backgroundSize: "cover", width: "300px", height: "200px"}} src={src}/>
-                                // <div style={{ borderTopLeftRadius: "1rem", borderTopRightRadius: "1rem", backgroundPosition: "center", backgroundSize: "cover", width: "300px", height: "200px", backgroundImage: "url(" + src + ")" }}>
-                                // </div>
                             )
                         }
                     </ProgressiveImage>
