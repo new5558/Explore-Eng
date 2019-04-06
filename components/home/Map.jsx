@@ -54,13 +54,17 @@ export default class extends Component {
     }, console.log);
   }
 
-  componentWillMount() {
-    this.getDataFromFireBase('place', 'marker')
-      .then((marker) => this.setState({ marker }));
-  }
+  // componentWillMount() {
+  //   this.getDataFromFireBase('place', 'marker')
+  //     .then((marker) => this.setState({ marker }));
+  // }
 
   componentDidMount() {
-    if(this.props.showIosInstallMessage) return;
+    if (this.props.showIosInstallMessage) return;
+
+    this.getDataFromFireBase('place', 'marker')
+    .then((marker) => this.setState({ marker }));
+    
     this.getLocation(
       position => {
         const latitude = position.coords.latitude;
@@ -75,7 +79,9 @@ export default class extends Component {
         this.setCenterLocation(13.75398, 100.50144)
       }
     );
+
     this.getAndSetCurrentLocation();
+    
     setInterval(() => {
       this.getAndSetCurrentLocation();
       this.props.isClickedCircleBtn && this.getLocation(

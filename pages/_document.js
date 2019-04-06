@@ -13,7 +13,7 @@ export default class MyDocument extends Document {
           <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/favicon/apple-touch-icon.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon/favicon-32x32.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon/favicon-16x16.png" />
-          <link rel="manifest" href="/static/icons/favicon/site.webmanifest" />
+          <link rel="manifest" href="/site.webmanifest" />
           <link rel="mask-icon" href="/static/icons/favicon/safari-pinned-tab.svg" color="#5bbad5" />
           <meta name="apple-mobile-web-app-title" content="Test" />
           <meta name="application-name" content="Test" />
