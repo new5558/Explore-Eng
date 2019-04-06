@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
+    "compression": "^1.7.4",
     "concurrently": "^4.1.0",
     "dotenv": "^7.0.0",
     "firebase": "^5.9.2",
@@ -12,6 +13,7 @@
     "next-offline": "^3.3.7",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-progressive-image": "^0.6.0",
     "react-scripts": "2.1.8"
   },
   "scripts": {
