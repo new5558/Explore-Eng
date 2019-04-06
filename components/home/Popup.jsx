@@ -10,10 +10,11 @@ export default ({ isPopupPresent, name, picture, closePopup, openInMaps }) => {
                 </div>
                 <div className="bg-white flex flex-col fixed z-40 shadow" style={{ borderRadius: "1rem" }}>
                     <ProgressiveImage src={picture} placeholder="../../static/image/placeholder.jpg">
-                        {(src) =>
+                        {src =>
                             (
-                                <div style={{ borderTopLeftRadius: "1rem", borderTopRightRadius: "1rem", backgroundPosition: "center", backgroundSize: "cover", width: "300px", height: "200px", backgroundImage: "url(" + src + ")" }}>
-                                </div>
+                                <img style={{ borderTopLeftRadius: "1rem", borderTopRightRadius: "1rem", backgroundPosition: "center", backgroundSize: "cover", width: "300px", height: "200px"}} src={src}/>
+                                // <div style={{ borderTopLeftRadius: "1rem", borderTopRightRadius: "1rem", backgroundPosition: "center", backgroundSize: "cover", width: "300px", height: "200px", backgroundImage: "url(" + src + ")" }}>
+                                // </div>
                             )
                         }
                     </ProgressiveImage>

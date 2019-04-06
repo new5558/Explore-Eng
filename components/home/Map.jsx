@@ -141,13 +141,13 @@ export default class extends Component {
           yesIWantToUseGoogleMapApiInternals
           onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps)}
         >
-          {this.generateMarker(openPopup)}
           <CurrentLocation
             zoom={this.props.currentZoom}
             lat={currentLatitude}
             lng={currentLongitude}
             acc={this.state.currentAccuracy}
           />
+          {this.generateMarker(openPopup)}
           {
             currentMarkerLatitude
               ?
