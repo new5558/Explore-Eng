@@ -41,7 +41,8 @@ class App extends Component {
         name: null,
         latitude: null,
         longitude: null,
-      }
+      },
+      isFaddingOut: false,
     }
   }
 
@@ -185,20 +186,28 @@ class App extends Component {
         name,
         latitude,
         longitude
-      }
+      },
     })
   }
 
   closePopup = () => {
     this.setState({
-      isPopupPresent: false,
+      isFaddingOut: true,
+    })
+    setTimeout(() => this.setState({
       popup: {
         picture: null,
         name: null,
         latitude: null,
         longitude: null,
-      }
-    })
+      },
+      isPopupPresent: false,
+      isFaddingOut: false,
+    }), 300)
+  }
+
+  componentDidUpdate() {
+    console.log(this.state)
   }
 
   openInMaps = () => {
@@ -244,7 +253,7 @@ class App extends Component {
           showIosInstallMessage={this.state.showIosInstallMessage}
           openPopup={this.openPopup}
         />
-        <Popup isPopupPresent={this.state.isPopupPresent} name={this.state.popup.name} picture={this.state.popup.picture} closePopup={this.closePopup} openInMaps={this.openInMaps} />
+        <Popup isFaddingOut={this.state.isFaddingOut} isPopupPresent={this.state.isPopupPresent} name={this.state.popup.name} picture={this.state.popup.picture} closePopup={this.closePopup} openInMaps={this.openInMaps} />
         {
           this.state.showIosInstallMessage ?
             (
