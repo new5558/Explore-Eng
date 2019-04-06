@@ -217,6 +217,7 @@ class App extends Component {
   }
 
   openInMaps = () => {
+    window.open('https://dev.norapat.com')
     const { latitude, longitude } = this.state.popup;
     if /* if we're on iOS, open in Apple Maps */
       ((navigator.platform.indexOf("iPhone") != -1) ||
@@ -234,7 +235,7 @@ class App extends Component {
       if (choiceResult.outcome === 'accepted') {
         window.addEventListener('appinstalled', (evt) => {
           // alert('app installed');
-          window.open('/')
+          window.open('https://dev.norapat.com')
         });
       } 
       deferredPrompt = null;
