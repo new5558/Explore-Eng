@@ -9,6 +9,7 @@ import Popup from '../components/home/Popup';
 
 const key = process.env.GOOGLEMAP_API_KEY;
 let textSearch = null;
+let deferredPrompt = null;
 
 class App extends Component {
   static getInitialProps() {
@@ -36,6 +37,7 @@ class App extends Component {
       },
       isClickedCircleBtn: false,
       showIosInstallMessage: false,
+      showChromeInstallMessage: false,
       isPopupPresent: false,
       popup: {
         name: null,
@@ -102,6 +104,15 @@ class App extends Component {
     if (isIos() && !isInStandaloneMode()) {
       setTimeout(() => this.setState({ showIosInstallMessage: true }), 3000);
     }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+      setTimeout(() => this.setState({ showChromeInstallMessage: true }), 3000);
+    });
+
   }
 
   onSearchOpen = () => {
@@ -267,6 +278,24 @@ class App extends Component {
                     Select the option 'Add to Home Screen'
                 </span>
                   <img src="../static/image/ios_share_2.png" className="w-64" />
+                </div>
+              </div>
+            )
+            :
+            null
+        }
+        {
+          this.state.showChromeInstallMessage
+            ?
+            (
+              <div className="fixed pin-t pin-l z-50 mx-auto w-full h-full text-white text-lg flex flex-col justify-around items-center px-3 py-2" style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}>
+                <div className="fixed pin-t pin-r">
+                  <CloseIcon className="w-12 h-12" fill="#FFFFFF" onClick={() => this.setState({ showIosInstallMessage: false })} />
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-2xl my-2">
+                    Please Install the App
+                  </span>
                 </div>
               </div>
             )
