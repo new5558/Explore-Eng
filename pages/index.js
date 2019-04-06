@@ -293,7 +293,7 @@ class App extends Component {
                   <CloseIcon className="w-12 h-12" fill="#FFFFFF" onClick={() => this.setState({ showIosInstallMessage: false })} />
                 </div>
                 <div className="flex flex-col items-center">
-                  <span className="text-2xl my-2">
+                  <span onClick={() => deferredPrompt.prompt()} className="text-2xl my-2">
                     Please Install the App
                   </span>
                 </div>
