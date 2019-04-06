@@ -10,7 +10,7 @@ export default ({ data, goToPlace }) => {
         :
         null
     return (
-        <div className="my-16 mx-3">
+        <div className="mt-16 mx-3 sticky z-30 bg-white">
             {allPlace}
         </div>
     )

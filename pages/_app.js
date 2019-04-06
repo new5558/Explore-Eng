@@ -4,7 +4,7 @@ import { MapIcon } from '../components/shared-components/Icons';
 
 const Button = ({ text, onClick, children }) => {
     return (
-        <div className="flex flex-col justify-center items-center text-base font-semibold w-full mx-5 py-2 rounded" style={{boxShadow: "0 3px 4px 0 rgba(0,0,0,0.05)"}}>
+        <div className="flex flex-col justify-center items-center text-base w-full mx-5 py-2 rounded" style={{boxShadow: "0 3px 4px 0 rgba(0,0,0,0.05)"}}>
             <div className="w-6 h-6 mb-1">
                 {children}
             </div>
