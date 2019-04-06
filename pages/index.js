@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import Map from '../components/home/Map'
 import SearchBar from '../components/home/SearchBar';
 import SearchResult from '../components/home/SearchResult';
-import '../util/tw.css';
-import '../static/css/body.css'
 import { CloseIcon } from '../components/shared-components/Icons';
 import Popup from '../components/home/Popup';
 

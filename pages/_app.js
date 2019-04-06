@@ -2,6 +2,8 @@ import React from 'react'
 import App, { Container } from 'next/app'
 import { MapIcon, PersonIcon } from '../components/shared-components/Icons';
 import Link from 'next/link'
+import '../static/css/body.css'
+import '../util/tw.css';
 
 const Button = ({ text, textColor, onClick, children }) => {
     return (
