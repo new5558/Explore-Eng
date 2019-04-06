@@ -233,10 +233,11 @@ class App extends Component {
     deferredPrompt.userChoice
     .then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
-        window.addEventListener('appinstalled', (evt) => {
-          // alert('app installed');
-          window.open('https://dev.norapat.com')
-        });
+        window.onappinstalled = () => alert('app installed');
+        // window.addEventListener('appinstalled', (evt) => {
+        //   // alert('app installed');
+        //   window.open('https://dev.norapat.com')
+        // });
       } 
       deferredPrompt = null;
     });
