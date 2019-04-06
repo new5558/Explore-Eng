@@ -290,12 +290,15 @@ class App extends Component {
             (
               <div className="fixed pin-t pin-l z-50 mx-auto w-full h-full text-white text-lg flex flex-col justify-around items-center px-3 py-2" style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}>
                 <div className="fixed pin-t pin-r">
-                  <CloseIcon className="w-12 h-12" fill="#FFFFFF" onClick={() => this.setState({ showIosInstallMessage: false })} />
+                  <CloseIcon className="w-12 h-12" fill="#FFFFFF" onClick={() => this.setState({ showChromeInstallMessage: false })} />
                 </div>
                 <div className="flex flex-col items-center">
-                  <span onClick={() => deferredPrompt.prompt()} className="text-2xl my-2">
+                  <span className="text-2xl my-2">
                     Please Install the App
                   </span>
+                  <button className="bg-green text-xl rounded px-6 py-3 shadow text-white" onClick={() => deferredPrompt.prompt()}>
+                    Install
+                  </button>
                 </div>
               </div>
             )
