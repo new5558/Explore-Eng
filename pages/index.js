@@ -206,10 +206,6 @@ class App extends Component {
     }), 300)
   }
 
-  componentDidUpdate() {
-    console.log(this.state)
-  }
-
   openInMaps = () => {
     const { latitude, longitude } = this.state.popup;
     if /* if we're on iOS, open in Apple Maps */
