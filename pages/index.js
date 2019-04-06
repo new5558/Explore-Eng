@@ -114,7 +114,7 @@ class App extends Component {
     });
 
     window.addEventListener('appinstalled', (event) => {
-      console.log('👍', 'appinstalled', event);
+      window.close();
     });
 
   }
