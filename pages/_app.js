@@ -51,7 +51,8 @@ export default class MyApp extends App {
     constructor(props) {
         super(props);
         this.state = {
-            userInfo: {}
+            userInfo: {},
+            isLogin: null,
         }
     }
 
@@ -69,14 +70,17 @@ export default class MyApp extends App {
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                this.setUserInfo(user);
+                this.setUserInfo(user, true);
+            } else {
+                this.setUserInfo({}, false);
             }
         })
     }
 
-    setUserInfo = (user) => {
+    setUserInfo = (user, isLogin) => {
         this.setState({
-            userInfo: user
+            userInfo: user,
+            isLogin
         })
     }
 
@@ -86,7 +90,7 @@ export default class MyApp extends App {
         return (
             <Container>
                 <Layout path={pathName}>
-                    <Component userInfo={this.state.userInfo} setUserInfo={this.state.setUserInfo} {...pageProps} />
+                    <Component isLogin={this.state.isLogin} userInfo={this.state.userInfo} setUserInfo={this.setUserInfo} {...pageProps} />
                 </Layout>
             </Container>
         )
