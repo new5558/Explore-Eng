@@ -2,6 +2,7 @@ import React from 'react'
 import App, { Container } from 'next/app'
 import { MapIcon, PersonIcon } from '../components/shared-components/Icons';
 import Link from 'next/link'
+import firebase from '../util/firebase'
 import '../static/css/body.css'
 import '../util/tw.css';
 
@@ -28,17 +29,17 @@ class Layout extends React.Component {
                 <div
                     className="fixed flex justify-around items-center pb-4 pt-2 pin-b pin-l w-screen h-24 bg-white shadow-md"
                     style={{ borderTopLeftRadius: "1rem", borderTopRightRadius: "1rem" }}
-                >   
-                <Link href="/">
-                    <Button textColor={color1} text="Map">
-                        <MapIcon fill={color1} />
-                    </Button>
-                </Link>
-                <Link href="account">
-                    <Button textColor={color2} text="Account">
-                        <PersonIcon fill={color2} />
-                    </Button>
-                </Link>
+                >
+                    <Link href="/">
+                        <Button textColor={color1} text="Map">
+                            <MapIcon fill={color1} />
+                        </Button>
+                    </Link>
+                    <Link href="account">
+                        <Button textColor={color2} text="Account">
+                            <PersonIcon fill={color2} />
+                        </Button>
+                    </Link>
                 </div>
             </div>
         )
@@ -47,16 +48,37 @@ class Layout extends React.Component {
 
 export default class MyApp extends App {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            userInfo: {}
+        }
+    }
+
     static async getInitialProps({ Component, router, ctx }) {
         let pageProps = {}
-    
+
         if (Component.getInitialProps) {
-          pageProps = await Component.getInitialProps(ctx)
+            pageProps = await Component.getInitialProps(ctx)
         }
         const pathName = ctx.pathname;
-    
+
         return { pageProps, pathName }
-      }
+    }
+
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.setUserInfo(user);
+            }
+        })
+    }
+
+    setUserInfo = (user) => {
+        this.setState({
+            userInfo: user
+        })
+    }
 
     render() {
         const { pathName } = this.props;
@@ -64,7 +86,7 @@ export default class MyApp extends App {
         return (
             <Container>
                 <Layout path={pathName}>
-                    <Component {...pageProps} />
+                    <Component userInfo={this.state.userInfo} setUserInfo={this.state.setUserInfo} {...pageProps} />
                 </Layout>
             </Container>
         )
