@@ -21,6 +21,7 @@ export default class extends Component {
         styles: mapStyle,
         zoomControl: false,
         fullscreenControl: false,
+        clickableIcons: false,
       };
     }
 
