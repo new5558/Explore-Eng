@@ -51,7 +51,7 @@ class Account extends Component {
     render() {
         // console.log(this.props.userInfo.displayName, this.props)
         return (
-            <div className="flex items-center flex-col justify-center h-screen">
+            <div className="flex items-center flex-col justify-start pt-2 h-screen">
                 {
                     this.props.isLogin === null
                         ?
@@ -83,14 +83,20 @@ class Account extends Component {
                                 )
                                 :
                                 (
-                                    <div className="m-2 px-2 py-2 flex items-end shadow text-white" style={{ borderRadius: "1rem", background: "linear-gradient(to right, #000099 0%, #0099cc 100%)" }} onClick={this.facebookLogin}>
+                                    <React.Fragment>
+                                    <img src="../static/image/iphonexspacegrey_portrait.jpg" style={{maxHeight: "60vh", height: "100%", maxWidth: "auto"}}/>
+                                        <span className="mt-2">
+                                            To Earn Points
+                                        </span>
+                                    <div className="m-2 px-2 mt-2 py-2 flex items-end shadow text-white" style={{ borderRadius: "1rem", background: "linear-gradient(to right, #000099 0%, #0099cc 100%)" }} onClick={this.facebookLogin}>
                                         <div className="w-8 h-8 mr-6">
                                             <FacebookIcon fill="#FFFFFF" />
                                         </div>
                                         <span className="mr-4">
                                             LOGIN WITH FACEBOOK
-                                </span>
+                                        </span>
                                     </div>
+                                     </React.Fragment>
                                 )
                         )
                 }
