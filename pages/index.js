@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Map from '../components/home/Map'
 import SearchBar from '../components/home/SearchBar';
 import SearchResult from '../components/home/SearchResult';
-import { CloseIcon } from '../components/shared-components/Icons';
+import { CloseIcon, CameraIcon } from '../components/shared-components/Icons';
 import Popup from '../components/home/Popup';
+import ProgressiveImage from 'react-progressive-image';
 
 const key = process.env.GOOGLEMAP_API_KEY;
 let textSearch = null;
@@ -38,9 +39,11 @@ class App extends Component {
       showChromeInstallMessage: false,
       isPopupPresent: false,
       popup: {
+        type: null,
         name: null,
         latitude: null,
         longitude: null,
+        picture: null,
       },
       isFaddingOut: false,
     }
@@ -179,18 +182,25 @@ class App extends Component {
     });
   }
 
-  openPopup = (e) => {
-    if (!e) return;
-    const target = e.target;
-    const name = target.dataset.name;
-    const picture = target.dataset.picture;
-    const latitude = target.dataset.latitude;
-    const longitude = target.dataset.longitude;
+  openPopup = (e, name) => {
+    let picture = null;
+    let latitude = null;
+    let longitude = null;
+    let type = 1;
+    if (e) {
+      const target = e.target;
+      type = 0;
+      name = target.dataset.name;
+      picture = target.dataset.picture;
+      latitude = target.dataset.latitude;
+      longitude = target.dataset.longitude;
+    }
     this.setState({
       isPopupPresent: true,
       popup: {
-        picture,
+        type,
         name,
+        picture,
         latitude,
         longitude
       },
@@ -203,6 +213,7 @@ class App extends Component {
     })
     setTimeout(() => this.setState({
       popup: {
+        type: null,
         picture: null,
         name: null,
         latitude: null,
@@ -214,31 +225,46 @@ class App extends Component {
   }
 
   openInMaps = () => {
-    window.open('https://dev.norapat.com')
     // window.open('https://dev.norapat.com')
-    // const { latitude, longitude } = this.state.popup;
-    // if /* if we're on iOS, open in Apple Maps */
-    //   ((navigator.platform.indexOf("iPhone") != -1) ||
-    //   (navigator.platform.indexOf("iPad") != -1) ||
-    //   (navigator.platform.indexOf("iPod") != -1))
-    //   window.open("maps://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=");
-    // else /* else use Google */
-    //   window.open("https://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=");
+    const { latitude, longitude } = this.state.popup;
+    if /* if we're on iOS, open in Apple Maps */
+      ((navigator.platform.indexOf("iPhone") != -1) ||
+      (navigator.platform.indexOf("iPad") != -1) ||
+      (navigator.platform.indexOf("iPod") != -1))
+      window.open("maps://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=");
+    else /* else use Google */
+      window.open("https://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=");
+  }
+
+  dropOff = (e) => {
+    const { name, latitude, longitude } = this.state.popup;
+    this.closePopup()
+    setTimeout(() => this.openPopup(null, name), 300)
+  }
+
+  submit = () => {
+
   }
 
   chromeInstall = () => {
     deferredPrompt.prompt()
     deferredPrompt.userChoice
-    .then((choiceResult) => {
-      deferredPrompt = null;
-    });
+      .then((choiceResult) => {
+        deferredPrompt = null;
+      });
   }
 
   render() {
     return (
-      <div className="h-full">
+      <div className="h-full" >
         <div className="fixed h-16 px-3 pin-t pin-l w-full z-40 flex flex-col items-center justify-center">
-          <SearchBar onClick={this.onSearchOpen} isSearching={this.state.isSearching} closeSearch={this.closeSearch} value={this.state.searchValue} onChange={this.onSearchChange} />
+          <SearchBar
+            onClick={this.onSearchOpen}
+            isSearching={this.state.isSearching}
+            closeSearch={this.closeSearch}
+            value={this.state.searchValue}
+            onChange={this.onSearchChange}
+          />
         </div>
         {
           this.state.isSearching
@@ -247,7 +273,7 @@ class App extends Component {
             :
             <React.Fragment />
         }
-        <Map
+        < Map
           isHidden={this.state.isSearching}
           setCurrentLocation={this.setCurrentLocation}
           currentLatitude={this.state.currentLocation.currentLatitude}
@@ -266,11 +292,70 @@ class App extends Component {
           showIosInstallMessage={this.state.showIosInstallMessage}
           openPopup={this.openPopup}
         />
-        <Popup isFaddingOut={this.state.isFaddingOut} isPopupPresent={this.state.isPopupPresent} name={this.state.popup.name} picture={this.state.popup.picture} closePopup={this.closePopup} openInMaps={this.openInMaps} />
+        <Popup
+          isFaddingOut={this.state.isFaddingOut}
+          isPopupPresent={this.state.isPopupPresent}
+          name={this.state.popup.name}
+          closePopup={this.closePopup}
+          onClickRight={this.state.popup.type === 0 ? this.openInMaps : this.closePopup}
+          onClickLeft={this.state.popup.type === 0 ? this.dropOff : this.submit}
+          type={this.state.popup.type}
+        >
+          {
+            this.state.popup.type === 0
+              ?
+              (
+                (this.state.popup.picture || this.state.isPopupPresent)
+                  ?
+                  (
+                    <ProgressiveImage src={this.state.popup.picture} placeholder="../static/image/placeholder.jpg">
+                      {(src, loading) =>
+                        (
+                          <div className="flex justify-center items-center" style={{ width: "300px", height: "200px" }}>
+                            <div className={"fixed z-50 " + (loading ? "lds-facebook" : "hidden")}>
+                              <div></div>
+                              <div></div>
+                              <div></div>
+                            </div>
+                            <img
+                              style={{
+                                borderTopLeftRadius: "1rem",
+                                borderTopRightRadius: "1rem",
+                                backgroundPosition: "center",
+                                backgroundSize: "cover",
+                                width: "300px",
+                                height: "200px"
+                              }}
+                              src={src}
+                            />
+                          </div>
+                        )
+                      }
+                    </ProgressiveImage>
+                  )
+                  :
+                  null
+              )
+              :
+              (
+                <div className="flex justify-center items-center py-3 px-5">
+                  <input className="fixed rounded-lg" style={{ width: "200px", height: "267px", opacity: "0" }} type="file" accept="image/*" capture="environment" />
+                  <div className="flex justify-center items-center bg-grey rounded-lg" style={{ width: "200px", height: "267px" }}>
+                    <div className="w-24 h-24">
+                      <CameraIcon fill="#000000" />
+                    </div>
+                  </div>
+                </div>
+              )
+          }
+        </Popup>
         {
           this.state.showIosInstallMessage ?
             (
-              <div className="fixed pin-t pin-l z-50 mx-auto w-full h-full text-white text-lg flex flex-col justify-around items-center px-3 py-2" style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}>
+              <div
+                className="fixed pin-t pin-l z-50 mx-auto w-full h-full text-white text-lg flex flex-col justify-around items-center px-3 py-2"
+                style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}
+              >
                 <div className="fixed pin-t pin-r">
                   <CloseIcon className="w-12 h-12" fill="#FFFFFF" onClick={() => this.setState({ showIosInstallMessage: false })} />
                 </div>
@@ -295,7 +380,10 @@ class App extends Component {
           this.state.showChromeInstallMessage
             ?
             (
-              <div className="fixed pin-t pin-l z-50 mx-auto w-full h-full text-white text-lg flex flex-col justify-around items-center px-3 py-2" style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}>
+              <div
+                className="fixed pin-t pin-l z-50 mx-auto w-full h-full text-white text-lg flex flex-col justify-around items-center px-3 py-2"
+                style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}
+              >
                 <div className="fixed pin-t pin-r">
                   <CloseIcon className="w-12 h-12" fill="#FFFFFF" onClick={() => this.setState({ showChromeInstallMessage: false })} />
                 </div>
@@ -312,7 +400,7 @@ class App extends Component {
             :
             null
         }
-      </div>
+      </div >
     );
   }
 }
