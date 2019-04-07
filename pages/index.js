@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Map from '../components/home/Map'
 import SearchBar from '../components/home/SearchBar';
 import SearchResult from '../components/home/SearchResult';
-import { CloseIcon, CameraIcon } from '../components/shared-components/Icons';
+import { CloseIcon, CameraIcon, SuccessIcon } from '../components/shared-components/Icons';
 import Popup from '../components/home/Popup';
 import ProgressiveImage from 'react-progressive-image';
 
@@ -38,6 +38,7 @@ class App extends Component {
       showIosInstallMessage: false,
       showChromeInstallMessage: false,
       isPopupPresent: false,
+      isInRange : false,
       popup: {
         type: null,
         name: null,
@@ -189,6 +190,7 @@ class App extends Component {
     let longitude = null;
     let file = null;
     let type = 1;
+    let isInRange = false;
     if (e) {
       const target = e.target;
       type = 0;
@@ -196,6 +198,11 @@ class App extends Component {
       picture = target.dataset.picture;
       latitude = target.dataset.latitude;
       longitude = target.dataset.longitude;
+        const { currentLatitude, currentLongitude } = this.state.currentLocation
+        isInRange = this.distance(latitude, longitude, currentLatitude, currentLongitude) < 0.1;
+    }
+    if (name === "Success") {
+      type = 2;
     }
     this.setState({
       isPopupPresent: true,
@@ -207,6 +214,7 @@ class App extends Component {
         longitude,
         file,
       },
+      isInRange,
     })
   }
 
@@ -247,12 +255,12 @@ class App extends Component {
   }
 
   submit = () => {
-
+    this.closePopup()
+    setTimeout(() => this.openPopup(null, "Success"), 300)
   }
 
   getImage = (e) => {
     const file = e.target.files;
-    console.log(file, 'file')
     this.setState(prevState => {
       prevState.popup.file = URL.createObjectURL(file[0]);
       return ({
@@ -269,8 +277,97 @@ class App extends Component {
       });
   }
 
-  componentDidUpdate() {
-    console.log(this.state)
+  distance = (lat1,lon1,lat2,lon2) => {
+    const R = 6371; // km (change this constant to get miles)
+    const dLat = (lat2-lat1) * Math.PI / 180;
+    const dLon = (lon2-lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180 ) * Math.cos(lat2 * Math.PI / 180 ) *
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const d = R * c;
+    return d;
+  }
+
+  generatePopup = (type) => {
+    const popup = {
+      0: (
+        (this.state.popup.picture || this.state.isPopupPresent)
+          ?
+          (
+            <ProgressiveImage src={this.state.popup.picture} placeholder="../static/image/placeholder.jpg">
+              {(src, loading) =>
+                (
+                  <div className="flex justify-center items-center" style={{ width: "300px", height: "200px" }}>
+                    <div className={"fixed z-50 " + (loading ? "lds-facebook" : "hidden")}>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                    <img
+                      style={{
+                        borderTopLeftRadius: "1rem",
+                        borderTopRightRadius: "1rem",
+                        backgroundPosition: "center",
+                        backgroundSize: "cover",
+                        width: "300px",
+                        height: "200px"
+                      }}
+                      src={src}
+                    />
+                  </div>
+                )
+              }
+            </ProgressiveImage>
+          )
+          :
+          null
+      ),
+      1: (
+        <div className="flex justify-center items-center py-3 px-3">
+          {
+            !this.state.popup.file
+              ?
+              (
+                <React.Fragment>
+                  <div className="flex justify-center items-center rounded-lg shadow" style={{ filter: "blur(1px)", background: "linear-gradient(to top right, #ff99ff 0%, #00ccff 100%)", width: "200px", height: "267px" }}>
+                  </div>
+                  <div className="w-24 h-24 fixed">
+                    <CameraIcon fill="#4f4d4d" />
+                  </div>
+                  <input onChange={this.getImage} className="fixed rounded-lg" style={{ width: "200px", height: "267px", opacity: "0" }} type="file" accept="image/*" capture="environment" />
+                </React.Fragment>
+              )
+              :
+              (
+                <React.Fragment>
+                  <img src={this.state.popup.file} className="flex justify-center items-center rounded-lg shadow" style={{ width: "200px", height: "267px" }} />
+                  <div className="w-16 h-16 fixed">
+                    <CameraIcon fill="#d1cfcf" />
+                  </div>
+                  <input onChange={this.getImage} className="fixed rounded-lg" style={{ width: "200px", height: "267px", opacity: "0" }} type="file" accept="image/*" capture="environment" />
+                </React.Fragment>
+              )
+          }
+        </div>
+      ),
+      2: (
+        <div
+          className="flex justify-center items-center bg-green-light"
+          style={{
+            width: "300px",
+            height: "200px",
+            borderTopLeftRadius: "1rem",
+            borderTopRightRadius: "1rem"
+          }}
+        >
+          <div className="w-24 h-24">
+            <SuccessIcon fill="#FFFFFF" />
+          </div>
+        </div>
+      )
+    }
+    return popup[type]
   }
 
   render() {
@@ -319,72 +416,9 @@ class App extends Component {
           onClickRight={this.state.popup.type === 0 ? this.openInMaps : this.closePopup}
           onClickLeft={this.state.popup.type === 0 ? this.dropOff : this.submit}
           type={this.state.popup.type}
+          disabled={!this.state.popup.file && !this.state.isInRange && this.state.popup.type !== 2}
         >
-          {
-            this.state.popup.type === 0
-              ?
-              (
-                (this.state.popup.picture || this.state.isPopupPresent)
-                  ?
-                  (
-                    <ProgressiveImage src={this.state.popup.picture} placeholder="../static/image/placeholder.jpg">
-                      {(src, loading) =>
-                        (
-                          <div className="flex justify-center items-center" style={{ width: "300px", height: "200px" }}>
-                            <div className={"fixed z-50 " + (loading ? "lds-facebook" : "hidden")}>
-                              <div></div>
-                              <div></div>
-                              <div></div>
-                            </div>
-                            <img
-                              style={{
-                                borderTopLeftRadius: "1rem",
-                                borderTopRightRadius: "1rem",
-                                backgroundPosition: "center",
-                                backgroundSize: "cover",
-                                width: "300px",
-                                height: "200px"
-                              }}
-                              src={src}
-                            />
-                          </div>
-                        )
-                      }
-                    </ProgressiveImage>
-                  )
-                  :
-                  null
-              )
-              :
-              (
-                <div className="flex justify-center items-center py-3 px-3">
-                  {
-                    !this.state.popup.file
-                      ?
-                      (
-                        <React.Fragment>
-                          <div className="flex justify-center items-center rounded-lg shadow" style={{ filter: "blur(1px)", background: "linear-gradient(to top right, #ff99ff 0%, #00ccff 100%)", width: "200px", height: "267px" }}>
-                          </div>
-                          <div className="w-24 h-24 fixed">
-                            <CameraIcon fill="#4f4d4d" />
-                          </div>
-                          <input onChange={this.getImage} className="fixed rounded-lg" style={{ width: "200px", height: "267px", opacity: "0" }} type="file" accept="image/*" capture="environment" />
-                        </React.Fragment>
-                      )
-                      :
-                      (
-                        <React.Fragment>
-                          <img src={this.state.popup.file} className="flex justify-center items-center rounded-lg shadow" style={{ width: "200px", height: "267px" }} />
-                          <div className="w-16 h-16 fixed">
-                            <CameraIcon fill="#d1cfcf" />
-                          </div>
-                          <input onChange={this.getImage} className="fixed rounded-lg" style={{ width: "200px", height: "267px", opacity: "0" }} type="file" accept="image/*" capture="environment" />
-                        </React.Fragment>
-                      )
-                  }
-                </div>
-              )
-          }
+          {this.generatePopup(this.state.popup.type)}
         </Popup>
         {
           this.state.showIosInstallMessage ?
