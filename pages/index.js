@@ -338,13 +338,13 @@ class App extends Component {
               )
               :
               (
-                <div className="flex justify-center items-center py-3 px-5">
-                  <input className="fixed rounded-lg" style={{ width: "200px", height: "267px", opacity: "0" }} type="file" accept="image/*" capture="environment" />
-                  <div className="flex justify-center items-center rounded-lg" style={{ background: "linear-gradient(to top right, #ff99ff 0%, #00ccff 100%)", width: "200px", height: "267px" }}>
-                    <div className="w-24 h-24">
-                      <CameraIcon fill="#000000" />
-                    </div>
+                <div className="flex justify-center items-center py-3 px-3">
+                  <div className="flex justify-center items-center rounded-lg shadow" style={{filter: "blur(1px)", background: "linear-gradient(to top right, #ff99ff 0%, #00ccff 100%)", width: "200px", height: "267px" }}>
                   </div>
+                  <div className="w-24 h-24 fixed">
+                      <CameraIcon fill="#4f4d4d" />
+                    </div>
+                  <input className="fixed rounded-lg" style={{ width: "200px", height: "267px", opacity: "0" }} type="file" accept="image/*" capture="environment" />
                 </div>
               )
           }
