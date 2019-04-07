@@ -83,7 +83,7 @@ class Account extends Component {
                                 )
                                 :
                                 (
-                                    <React.Fragment>
+                                        <div className="flex flex-col h-full items-center justify-center pb-32">
                                     <img src="../static/image/iphonexspacegrey_portrait.jpg" style={{maxHeight: "60vh", height: "100%", maxWidth: "auto"}}/>
                                         <span className="mt-2">
                                             To Earn Points
@@ -96,7 +96,7 @@ class Account extends Component {
                                             LOGIN WITH FACEBOOK
                                         </span>
                                     </div>
-                                     </React.Fragment>
+                                        </div>
                                 )
                         )
                 }
