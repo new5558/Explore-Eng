@@ -44,6 +44,7 @@ class App extends Component {
         latitude: null,
         longitude: null,
         picture: null,
+        file: null,
       },
       isFaddingOut: false,
     }
@@ -186,6 +187,7 @@ class App extends Component {
     let picture = null;
     let latitude = null;
     let longitude = null;
+    let file = null;
     let type = 1;
     if (e) {
       const target = e.target;
@@ -202,7 +204,8 @@ class App extends Component {
         name,
         picture,
         latitude,
-        longitude
+        longitude,
+        file,
       },
     })
   }
@@ -218,6 +221,7 @@ class App extends Component {
         name: null,
         latitude: null,
         longitude: null,
+        file: null,
       },
       isPopupPresent: false,
       isFaddingOut: false,
@@ -246,12 +250,27 @@ class App extends Component {
 
   }
 
+  getImage = (e) => {
+    const file = e.target.files;
+    console.log(file, 'file')
+    this.setState(prevState => {
+      prevState.popup.file = URL.createObjectURL(file[0]);
+      return ({
+        popup: prevState.popup
+      })
+    })
+  }
+
   chromeInstall = () => {
     deferredPrompt.prompt()
     deferredPrompt.userChoice
       .then((choiceResult) => {
         deferredPrompt = null;
       });
+  }
+
+  componentDidUpdate() {
+    console.log(this.state)
   }
 
   render() {
@@ -339,12 +358,30 @@ class App extends Component {
               :
               (
                 <div className="flex justify-center items-center py-3 px-3">
-                  <div className="flex justify-center items-center rounded-lg shadow" style={{filter: "blur(1px)", background: "linear-gradient(to top right, #ff99ff 0%, #00ccff 100%)", width: "200px", height: "267px" }}>
-                  </div>
-                  <div className="w-24 h-24 fixed">
-                      <CameraIcon fill="#4f4d4d" />
-                    </div>
-                  <input className="fixed rounded-lg" style={{ width: "200px", height: "267px", opacity: "0" }} type="file" accept="image/*" capture="environment" />
+                  {
+                    !this.state.popup.file
+                      ?
+                      (
+                        <React.Fragment>
+                          <div className="flex justify-center items-center rounded-lg shadow" style={{ filter: "blur(1px)", background: "linear-gradient(to top right, #ff99ff 0%, #00ccff 100%)", width: "200px", height: "267px" }}>
+                          </div>
+                          <div className="w-24 h-24 fixed">
+                            <CameraIcon fill="#4f4d4d" />
+                          </div>
+                          <input onChange={this.getImage} className="fixed rounded-lg" style={{ width: "200px", height: "267px", opacity: "0" }} type="file" accept="image/*" capture="environment" />
+                        </React.Fragment>
+                      )
+                      :
+                      (
+                        <React.Fragment>
+                          <img src={this.state.popup.file} className="flex justify-center items-center rounded-lg shadow" style={{ width: "200px", height: "267px" }} />
+                          <div className="w-16 h-16 fixed">
+                            <CameraIcon fill="#d1cfcf" />
+                          </div>
+                          <input onChange={this.getImage} className="fixed rounded-lg" style={{ width: "200px", height: "267px", opacity: "0" }} type="file" accept="image/*" capture="environment" />
+                        </React.Fragment>
+                      )
+                  }
                 </div>
               )
           }
