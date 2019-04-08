@@ -5,19 +5,12 @@ import SearchResult from '../components/home/SearchResult';
 import { CloseIcon, CameraIcon, SuccessIcon } from '../components/shared-components/Icons';
 import Popup from '../components/home/Popup';
 import ProgressiveImage from 'react-progressive-image';
-
+import Loading from '../components/shared-components/Loading';
 
 let textSearch = null;
 let deferredPrompt = null;
 
 class App extends Component {
-  // static async getInitialProps() {
-  //   const key = process.env.GOOGLEMAP_API_KEY;
-  //   console.log('getInitial Props', key)
-  //   return {
-  //     "env": key,
-  //   }
-  // }
 
   constructor(props) {
     super(props);
@@ -50,7 +43,9 @@ class App extends Component {
         file: null,
       },
       isFaddingOut: false,
+      waitingForQuery: false,
     }
+    this.timeout = 0;
   }
 
   onSearchChange = (e) => {
@@ -62,8 +57,11 @@ class App extends Component {
     this.setState({
       searchValue: value,
       isSearching: !(value === ""),
+      waitingForQuery: true,
     })
-    this.searchLocation(value);
+    // this.searchLocation(value)
+    clearTimeout(this.timeout)
+    this.timeout = setTimeout(() => this.searchLocation(value), 300);
   }
 
   apiIsLoaded = (map, maps) => {
@@ -156,7 +154,7 @@ class App extends Component {
             }
           })
         }
-        this.setState({ dataFromSearch: places });
+        this.setState({ dataFromSearch: places, waitingForQuery: false });
       })
   }
 
@@ -301,11 +299,7 @@ class App extends Component {
               {(src, loading) =>
                 (
                   <div className="flex justify-center items-center" style={{ width: "300px", height: "200px" }}>
-                    <div className={"fixed z-50 " + (loading ? "lds-facebook" : "hidden")}>
-                      <div></div>
-                      <div></div>
-                      <div></div>
-                    </div>
+                    <Loading loading={loading} positionFixed={true}/>
                     <img
                       style={{
                         borderTopLeftRadius: "1rem",
@@ -373,7 +367,7 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props.env, 'key')
+    console.log(this.timeout)
     return (
       <div className="h-full" >
         <div className="fixed h-16 px-3 pin-t pin-l w-full z-40 flex flex-col items-center justify-center">
@@ -388,7 +382,7 @@ class App extends Component {
         {
           this.state.isSearching
             ?
-            <SearchResult goToPlace={this.goToPlace} data={this.state.dataFromSearch} />
+            <SearchResult loading={this.state.waitingForQuery} goToPlace={this.goToPlace} data={this.state.dataFromSearch} />
             :
             <React.Fragment />
         }

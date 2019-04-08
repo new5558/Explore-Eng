@@ -1,4 +1,6 @@
-export default ({ data, goToPlace }) => {
+import Loading from "../shared-components/Loading";
+
+export default ({ data, goToPlace, loading = false }) => {
     const allPlace = data ?
         data.map((place, index) => {
             return (
@@ -8,10 +10,20 @@ export default ({ data, goToPlace }) => {
             )
         })
         :
-        null
+        null;
     return (
         <div className="mt-16 mx-3 sticky z-30 bg-white">
-            {allPlace}
+            {
+                loading
+                    ?
+                    (
+                        <div className="flex items-center justify-center">
+                            <Loading color="rgba(33, 33, 33, 0.3)" />
+                        </div>
+                    )
+                    :
+                    allPlace
+            }
         </div>
     )
 }
