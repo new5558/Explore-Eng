@@ -53,6 +53,7 @@ export default class MyApp extends App {
         this.state = {
             userInfo: {},
             isLogin: null,
+            apiKey: process.env.GOOGLEMAP_API_KEY,
         }
     }
 
@@ -63,8 +64,8 @@ export default class MyApp extends App {
             pageProps = await Component.getInitialProps(ctx)
         }
         const pathName = ctx.pathname;
-        const key = process.env.GOOGLEMAP_API_KEY;
-        console.log('getInitial Props APP.js', key)
+        // const key = process.env.GOOGLEMAP_API_KEY;
+        // console.log('getInitial Props APP.js', key)
         return { pageProps, pathName }
     }
 
@@ -91,7 +92,7 @@ export default class MyApp extends App {
         return (
             <Container>
                 <Layout path={pathName}>
-                    <Component isLogin={this.state.isLogin} userInfo={this.state.userInfo} setUserInfo={this.setUserInfo} {...pageProps} />
+                    <Component env={this.state.apiKey} isLogin={this.state.isLogin} userInfo={this.state.userInfo} setUserInfo={this.setUserInfo} {...pageProps} />
                 </Layout>
             </Container>
         )
