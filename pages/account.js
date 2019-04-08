@@ -75,7 +75,7 @@ class Account extends Component {
                                         <React.Fragment>
                                             <div className="flex items-center justify-between flex-col h-full">
                                                 <div className="flex flex-col items-center mt-5">
-                                                    <img className="rounded-full shadow" src={userInfo.photoURL + "?height=100"} />
+                                                    <img style={{height: "100px", width: "100px", background: '#b2b8c1 url(../static/icons/person.svg)  no-repeat center',  backgroundSize: "70px"}} className="rounded-full shadow" src={userInfo.photoURL + "?height=100"} />
                                                     <div className="flex text-center items-center flex-col">
                                                             <div className="text-grey-darker text-xl mt-5 mb-2">
                                                                 {userInfo.displayName}
