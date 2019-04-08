@@ -14,8 +14,8 @@ const config = {
   if(!firebase.apps.length) {
     // firebase.initializeApp({});
     firebase.initializeApp(config);
-    firebase.firestore().enablePersistence();
-    firestoreTemp = firebase.firestore() 
+    // firebase.firestore().enablePersistence();
+    firestoreTemp = firebase.firestore()
 }
 
 export const firestore = firestoreTemp;
