@@ -64,7 +64,9 @@ export default class MyApp extends App {
         }
         const pathName = ctx.pathname;
 
-        return { pageProps, pathName }
+        const key = process.env.GOOGLEMAP_API_KEY;
+
+        return { pageProps, pathName, "env": key }
     }
 
     componentDidMount() {
@@ -90,7 +92,7 @@ export default class MyApp extends App {
         return (
             <Container>
                 <Layout path={pathName}>
-                    <Component isLogin={this.state.isLogin} userInfo={this.state.userInfo} setUserInfo={this.setUserInfo} {...pageProps} />
+                    <Component env={this.props.env} isLogin={this.state.isLogin} userInfo={this.state.userInfo} setUserInfo={this.setUserInfo} {...pageProps} />
                 </Layout>
             </Container>
         )

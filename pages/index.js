@@ -11,12 +11,6 @@ let textSearch = null;
 let deferredPrompt = null;
 
 class App extends Component {
-  static async getInitialProps() {
-    const key = await process.env.GOOGLEMAP_API_KEY;
-    return {
-      "env": key,
-    }
-  }
 
   constructor(props) {
     super(props);
