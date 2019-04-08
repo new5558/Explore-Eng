@@ -20,6 +20,7 @@ class App extends Component {
       currentLocation: {
         currentLatitude: null,
         currentLongitude: null,
+        currentAccuracy: null
       },
       isSearching: false,
       centerLattitude: null,
@@ -33,7 +34,7 @@ class App extends Component {
       showIosInstallMessage: false,
       showChromeInstallMessage: false,
       isPopupPresent: false,
-      isInRange : false,
+      isInRange: false,
       popup: {
         type: null,
         name: null,
@@ -157,9 +158,9 @@ class App extends Component {
       })
   }
 
-  setCurrentLocation = (lat, lng) => {
+  setCurrentLocation = (lat, lng, currentAccuracy) => {
     this.setState({
-      currentLocation: { currentLatitude: lat, currentLongitude: lng },
+      currentLocation: { currentLatitude: lat, currentLongitude: lng, currentAccuracy },
     })
   }
 
@@ -197,8 +198,13 @@ class App extends Component {
       picture = target.dataset.picture;
       latitude = target.dataset.latitude;
       longitude = target.dataset.longitude;
-        const { currentLatitude, currentLongitude } = this.state.currentLocation
-        isInRange = this.distance(latitude, longitude, currentLatitude, currentLongitude) < 0.1;
+      const { currentLatitude, currentLongitude, currentAccuracy } = this.state.currentLocation
+      const r_earth = 6371000.0;
+      const pi = Math.PI;
+      const new_latitude = currentLatitude + ((-1) * (currentAccuracy) / r_earth) * (180 / pi);
+      const new_longitude = currentLongitude + (currentAccuracy / r_earth) * (180 / pi) / Math.cos(latitude * pi / 180);
+      const distance = this.distance(latitude, longitude, new_latitude, new_longitude);
+      isInRange = distance < (0.1 + currentAccuracy / 1000);
     }
     if (name === "Success") {
       type = 2;
@@ -276,14 +282,14 @@ class App extends Component {
       });
   }
 
-  distance = (lat1,lon1,lat2,lon2) => {
+  distance = (lat1, lon1, lat2, lon2) => {
     const R = 6371; // km (change this constant to get miles)
-    const dLat = (lat2-lat1) * Math.PI / 180;
-    const dLon = (lon2-lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(lat1 * Math.PI / 180 ) * Math.cos(lat2 * Math.PI / 180 ) *
-      Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
     return d;
   }
@@ -298,7 +304,7 @@ class App extends Component {
               {(src, loading) =>
                 (
                   <div className="flex justify-center items-center" style={{ width: "300px", height: "200px" }}>
-                    <Loading loading={loading} positionFixed={true}/>
+                    <Loading loading={loading} positionFixed={true} />
                     <img
                       style={{
                         borderTopLeftRadius: "1rem",
@@ -389,6 +395,7 @@ class App extends Component {
           setCurrentLocation={this.setCurrentLocation}
           currentLatitude={this.state.currentLocation.currentLatitude}
           currentLongitude={this.state.currentLocation.currentLongitude}
+          currentAccuracy={this.state.currentLocation.currentAccuracy}
           apiKey={this.props.env}
           apiIsLoaded={this.apiIsLoaded}
           centerLattitude={this.state.centerLattitude}

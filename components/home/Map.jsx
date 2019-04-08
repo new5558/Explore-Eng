@@ -37,12 +37,13 @@ export default class extends Component {
   getLocation = (success, failure) => {
     navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition(
       position => success(position),
-      error => failure(error)
+      error => failure(error),
+      {enableHighAccuracy: true,}
     );
   }
 
   setCurrentLocation = (latitude, longitude, accuracy) => {
-    this.setState({ currentAccuracy: accuracy }, this.props.setCurrentLocation(latitude, longitude))
+    this.props.setCurrentLocation(latitude, longitude, accuracy)
   }
 
   setCenterLocation = (latitude, longitude, callBack) => {
@@ -151,7 +152,7 @@ export default class extends Component {
             zoom={this.props.currentZoom}
             lat={currentLatitude}
             lng={currentLongitude}
-            acc={this.state.currentAccuracy}
+            acc={this.props.currentAccuracy}
           />
           {this.generateMarker(openPopup)}
           {
