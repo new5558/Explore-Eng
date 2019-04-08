@@ -50,6 +50,7 @@ export default class MyApp extends App {
 
     constructor(props) {
         super(props);
+        console.log(process.env.GOOGLEMAP_API_KEY, 'constructor')
         this.state = {
             userInfo: {},
             isLogin: null,
