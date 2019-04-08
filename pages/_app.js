@@ -63,7 +63,8 @@ export default class MyApp extends App {
             pageProps = await Component.getInitialProps(ctx)
         }
         const pathName = ctx.pathname;
-
+        const key = process.env.GOOGLEMAP_API_KEY;
+        console.log('getInitial Props APP.js', key)
         return { pageProps, pathName }
     }
 
