@@ -73,7 +73,7 @@ export default class MyApp extends App {
         }
         const pathName = ctx.pathname;
         const key = process.env.GOOGLEMAP_API_KEY;
-        return { pageProps, pathName, "env": key, }
+        return { pageProps, pathName, "env": key }
     }
 
     componentDidMount() {
@@ -100,7 +100,7 @@ export default class MyApp extends App {
         return (
             <Container>
                 <Layout path={pathName}>
-                    <Component env={this.state.apiKey ? this.state.apiKey : this.props.env} isLogin={this.state.isLogin} userInfo={this.state.userInfo} setUserInfo={this.setUserInfo} {...pageProps} />
+                    <Component firestore={this.props.firestore} env={this.state.apiKey ? this.state.apiKey : this.props.env} isLogin={this.state.isLogin} userInfo={this.state.userInfo} setUserInfo={this.setUserInfo} {...pageProps} />
                 </Layout>
             </Container>
         )

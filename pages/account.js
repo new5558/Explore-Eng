@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase from '../util/firebase'
+// import firebase from '../util/firebase'
 import { FacebookIcon } from '../components/shared-components/Icons';
 import Loading from '../components/shared-components/Loading';
 

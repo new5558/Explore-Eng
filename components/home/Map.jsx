@@ -5,7 +5,7 @@ import Marker from './Marker';
 import CircleBtn from '../../components/home/CircleBtn';
 import { LocationIcon } from '../../components/shared-components/Icons';
 import CurrentLocation from './CurrentLocation';
-import firebase from '../../util/firebase'
+import { firestore } from '../../util/firebase'
 
 export default class extends Component {
   static defaultProps = {
@@ -103,9 +103,7 @@ export default class extends Component {
   }
 
   getDataFromFireBase = (col, doc) => {
-    const db = firebase.firestore();
-    db.enablePersistence()
-    const marker = db.collection(col).doc(doc);
+    const marker = firestore.collection(col).doc(doc);
     return marker.get()
       .then(result => result.data());
   }
