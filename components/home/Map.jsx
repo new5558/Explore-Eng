@@ -34,6 +34,21 @@ export default class extends Component {
     }
   }
 
+  getNewCoordinate = (currentLatitude, currentLongitude, currentAccuracy) => {
+    if(currentLatitude == null || currentLongitude == null) return {
+      newLatitude: null,
+      newLongitude: null,
+    }
+    const r_earth = 6371000.0;
+    const pi = Math.PI;
+    const newLatitude = currentLatitude + ((1) * (currentAccuracy) / r_earth) * (180 / pi);
+    const newLongitude = currentLongitude + ((-1) * (currentAccuracy) / r_earth) * (180 / pi) / Math.cos(currentLatitude * pi / 180);
+    return({
+      newLatitude: newLatitude ? newLatitude : null,
+      newLongitude: newLongitude ? newLongitude : null,
+    })
+  }
+
   getLocation = (success, failure) => {
     navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition(
       position => success(position),
@@ -128,8 +143,9 @@ export default class extends Component {
   }
 
   render() {
-    const { apiIsLoaded, isHidden, currentLongitude, currentLatitude, centerLattitude, centerLongitude, currentMarkerLatitude, currentMarkerLongitude, clickCircleBtn, openPopup } = this.props;
+    const { apiIsLoaded, isHidden, currentLongitude, currentLatitude, currentAccuracy, centerLattitude, centerLongitude, currentMarkerLatitude, currentMarkerLongitude, clickCircleBtn, openPopup } = this.props;
     // console.log(currentMarkerLatitude, currentMarkerlongitude, 'current Marker')
+    const newCoordinate = this.getNewCoordinate(currentLatitude, currentLongitude, currentAccuracy)
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: '100vh', width: '100%' }} className={isHidden ? "hidden" : ""} >
@@ -150,9 +166,9 @@ export default class extends Component {
         >
           <CurrentLocation
             zoom={this.props.currentZoom}
-            lat={currentLatitude}
-            lng={currentLongitude}
-            acc={this.props.currentAccuracy}
+            lat={newCoordinate.newLatitude}
+            lng={newCoordinate.newLongitude}
+            acc={currentAccuracy}
           />
           {this.generateMarker(openPopup)}
           {

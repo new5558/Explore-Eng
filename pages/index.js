@@ -199,11 +199,7 @@ class App extends Component {
       latitude = target.dataset.latitude;
       longitude = target.dataset.longitude;
       const { currentLatitude, currentLongitude, currentAccuracy } = this.state.currentLocation
-      const r_earth = 6371000.0;
-      const pi = Math.PI;
-      const new_latitude = currentLatitude + ((-1) * (currentAccuracy) / r_earth) * (180 / pi);
-      const new_longitude = currentLongitude + (currentAccuracy / r_earth) * (180 / pi) / Math.cos(latitude * pi / 180);
-      const distance = this.distance(latitude, longitude, new_latitude, new_longitude);
+      const distance = this.distance(latitude, longitude, currentLatitude, currentLongitude);
       isInRange = distance < (0.1 + currentAccuracy / 1000);
     }
     if (name === "Success") {
