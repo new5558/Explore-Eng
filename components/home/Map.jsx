@@ -104,6 +104,7 @@ export default class extends Component {
 
   getDataFromFireBase = (col, doc) => {
     const db = firebase.firestore();
+    db.enablePersistence()
     const marker = db.collection(col).doc(doc);
     return marker.get()
       .then(result => result.data());
