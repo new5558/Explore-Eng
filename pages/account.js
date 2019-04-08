@@ -15,7 +15,6 @@ class Account extends Component {
     facebookLogin = () => {
         var provider = new firebase.auth.FacebookAuthProvider();
         firebase.auth().signInWithRedirect(provider);
-        console.log('firenase')
         firebase.auth().getRedirectResult().then((result) => {
             if (result.credential) {
                 // This gives you a Facebook Access Token. You can use it to access the Facebook API.
@@ -51,53 +50,66 @@ class Account extends Component {
     }
 
     componentDidUpdate() {
-        console.log(this.state)
+        console.log(this.props.userInfo.photoURL, this.props.userInfo)
     }
 
     render() {
         // console.log(this.props.userInfo.displayName, this.props)
+        const { isLogin, userInfo } = this.props;
         return (
             <div className="flex items-center flex-col justify-start pt-2 h-screen">
-                <div className="flex flex-col h-full items-center justify-center pb-32">
+                <div className="flex flex-col h-full items-center justify-start pb-32">
                     {
-                        this.props.isLogin === null
+                        isLogin === null
                             ?
                             (
-                                <Loading color="grey"/>
+                                <div className="flex flex-col items-center justify-center h-full">
+                                    <Loading color="grey" />
+                                </div>
                             )
                             :
                             (
-                                this.props.isLogin
+                                isLogin
                                     ?
                                     (
                                         <React.Fragment>
-                                            <div className="flex items-center">
-                                                Welcome:&nbsp;
-                                            <span className="text-blue">
-                                                    {this.props.userInfo.displayName}
-                                                </span>
-                                            </div>
-                                            <div className="m-2 px-8 py-2 flex items-end shadow text-white" style={{ borderRadius: "1rem", background: "linear-gradient(to right, #ff9933 0%, #ff0000 100%)" }} onClick={this.logout}>
-                                                <span>
-                                                    LOGOUT
-                                            </span>
+                                            <div className="flex items-center justify-between flex-col h-full">
+                                                <div className="flex flex-col items-center mt-5">
+                                                    <img className="rounded-full shadow" src={userInfo.photoURL + "?height=100"} />
+                                                    <div className="flex text-center items-center flex-col">
+                                                            <div className="text-grey-darker text-xl mt-5 mb-2">
+                                                                {userInfo.displayName}
+                                                            </div>
+                                                        <div className="text-blue">
+                                                            <span className="text-3xl">3950 </span>
+                                                            <span className="text-xl">Points</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="m-2 px-8 py-2 flex items-end shadow text-white" style={{ borderRadius: "1rem", background: "linear-gradient(to right, #ff9933 0%, #ff0000 100%)" }} onClick={this.logout}>
+                                                    <span>
+                                                        LOGOUT
+                                                    </span>
+                                                </div>
                                             </div>
                                         </React.Fragment>
                                     )
                                     :
                                     (
                                         <React.Fragment>
-                                            <img src="../static/image/iphonexspacegrey_portrait.jpg" style={{ maxHeight: "60vh", height: "100%", maxWidth: "auto" }} />
-                                            <span className="mt-2">
-                                                To Earn Points
+                                            <div className="flex items-center flex-col justify-center h-full">
+                                                <img src="../static/image/iphonexspacegrey_portrait.jpg" style={{ maxHeight: "60vh", height: "100%", maxWidth: "auto" }} />
+                                                <span className="mt-2">
+                                                    To Earn Points
                                         </span>
-                                            <div className="m-2 px-2 mt-2 py-2 flex items-end shadow text-white" style={{ borderRadius: "1rem", background: "linear-gradient(to right, #000099 0%, #0099cc 100%)" }} onClick={this.facebookLogin}>
-                                                <div className="w-8 h-8 mr-6">
-                                                    <FacebookIcon fill="#FFFFFF" />
+                                                <div className="m-2 px-2 mt-2 py-2 flex items-end shadow text-white" style={{ borderRadius: "1rem", background: "linear-gradient(to right, #000099 0%, #0099cc 100%)" }} onClick={this.facebookLogin}>
+                                                    <div className="w-8 h-8 mr-6">
+                                                        <FacebookIcon fill="#FFFFFF" />
+                                                    </div>
+                                                    <span className="mr-4">
+                                                        LOGIN WITH FACEBOOK
+                                        </span>
                                                 </div>
-                                                <span className="mr-4">
-                                                    LOGIN WITH FACEBOOK
-                                        </span>
                                             </div>
                                         </React.Fragment>
                                     )

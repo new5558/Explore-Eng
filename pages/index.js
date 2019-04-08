@@ -144,7 +144,6 @@ class App extends Component {
       , (result, status) => {
         let places = [];
         if (status === 'OK') {
-          // console.log(result, 'result')
           places = result.map(place => {
             const location = place.geometry.location;
             return {
@@ -367,7 +366,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.timeout)
     return (
       <div className="h-full" >
         <div className="fixed h-16 px-3 pin-t pin-l w-full z-40 flex flex-col items-center justify-center">
