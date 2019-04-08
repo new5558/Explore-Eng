@@ -94,7 +94,8 @@ export default class extends Component {
       },
       () => {
         this.setCenterLocation(13.75398, 100.50144)
-      }
+      },
+      false
     );
 
     this.getAndSetCurrentLocation(false);
