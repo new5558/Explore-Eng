@@ -105,10 +105,11 @@ export default class extends Component {
         position => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
+          const accuracy = position.coords.accuracy;
           // console.log("prepare to set center location")
           // this.setCenterLocation(latitude, longitude);
           this.setCenterLocation(latitude, longitude,
-            () => this.props.setCurrentLocation(latitude, longitude)
+            () => this.props.setCurrentLocation(latitude, longitude, accuracy)
           )
         },
         () => {
