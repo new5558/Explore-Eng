@@ -50,7 +50,6 @@ export default class MyApp extends App {
 
     constructor(props) {
         super(props);
-        console.log(process.env.GOOGLEMAP_API_KEY, 'constructor')
         this.state = {
             userInfo: {},
             isLogin: null,
@@ -74,7 +73,6 @@ export default class MyApp extends App {
         }
         const pathName = ctx.pathname;
         const key = process.env.GOOGLEMAP_API_KEY;
-        console.log('getInitial Props APP.js', key)
         return { pageProps, pathName, "env": key, }
     }
 
