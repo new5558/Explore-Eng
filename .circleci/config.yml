@@ -35,12 +35,12 @@ jobs:
           name: Build and push Docker image
           command: | 
             yarn gencss
-            docker build -t $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID .
+            docker build --build-arg GOOGLEMAP_API_KEY=$GOOGLEMAP_API_KEY -t $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID .
             docker login -u $DOCKER_LOGIN -p $DOCKER_PWD
             docker push $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID
-
+# -e 'GOOGLEMAP_API_KEY=$GOOGLEMAP_API_KEY'
       - deploy:
           name: Deploy app to Digital Ocean Server via Docker
           command: |
-            ssh -o StrictHostKeyChecking=no $SSH_PATH "docker image pull $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID && docker rm $IMAGE_NAME -f && docker run -e 'NODE_ENV=production' -e 'GOOGLEMAP_API_KEY=$GOOGLEMAP_API_KEY' -d -p 3000:3000 --name $IMAGE_NAME $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID"
+            ssh -o StrictHostKeyChecking=no $SSH_PATH "docker image pull $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID && docker rm $IMAGE_NAME -f && docker run -e 'NODE_ENV=production' -d -p 3000:3000 --name $IMAGE_NAME $DOCKER_LOGIN/$IMAGE_NAME:$CIRCLE_WORKFLOW_ID"
             # $SSH_PATH = root@norapat.com
