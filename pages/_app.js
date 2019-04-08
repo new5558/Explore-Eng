@@ -102,7 +102,7 @@ export default class MyApp extends App {
         return (
             <Container>
                 <Layout path={pathName}>
-                    <Component env={this.state.apiKey} isLogin={this.state.isLogin} userInfo={this.state.userInfo} setUserInfo={this.setUserInfo} {...pageProps} />
+                    <Component env={this.state.apiKey ? this.state.apiKey : this.props.env} isLogin={this.state.isLogin} userInfo={this.state.userInfo} setUserInfo={this.setUserInfo} {...pageProps} />
                 </Layout>
             </Container>
         )
