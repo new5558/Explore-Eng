@@ -371,6 +371,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(key, 'key')
     return (
       <div className="h-full" >
         <div className="fixed h-16 px-3 pin-t pin-l w-full z-40 flex flex-col items-center justify-center">
