@@ -1,4 +1,7 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore'; // If using Firebase database
+import 'firebase/auth';
+
 let firestoreTemp = null;
 const config = {
     apiKey: "AIzaSyA0xbcE6IVcntSKh4f0FJfSwtz3LJ4QV-o",
