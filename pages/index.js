@@ -6,12 +6,13 @@ import { CloseIcon, CameraIcon, SuccessIcon } from '../components/shared-compone
 import Popup from '../components/home/Popup';
 import ProgressiveImage from 'react-progressive-image';
 
-const key = process.env.GOOGLEMAP_API_KEY;
+
 let textSearch = null;
 let deferredPrompt = null;
 
 class App extends Component {
-  static getInitialProps() {
+  static async getInitialProps() {
+    const key = await process.env.GOOGLEMAP_API_KEY;
     return {
       "env": key,
     }
