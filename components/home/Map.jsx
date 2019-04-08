@@ -49,11 +49,11 @@ export default class extends Component {
     })
   }
 
-  getLocation = (success, failure) => {
+  getLocation = (success, failure, highAccuracy = true) => {
     navigator && navigator.geolocation && navigator.geolocation.getCurrentPosition(
       position => success(position),
       error => failure(error),
-      {enableHighAccuracy: true,}
+      {enableHighAccuracy: highAccuracy,}
     );
   }
 
@@ -65,10 +65,10 @@ export default class extends Component {
     this.props.setCenterLocation(latitude, longitude, callBack)
   }
 
-  getAndSetCurrentLocation = () => {
+  getAndSetCurrentLocation = (highAccuracy) => {
     this.getLocation((position) => {
       this.setCurrentLocation(position.coords.latitude, position.coords.longitude, position.coords.accuracy)
-    }, console.log);
+    }, console.log, highAccuracy);
   }
 
   // componentWillMount() {
@@ -97,7 +97,7 @@ export default class extends Component {
       }
     );
 
-    this.getAndSetCurrentLocation();
+    this.getAndSetCurrentLocation(false);
     
     setInterval(() => {
       this.getAndSetCurrentLocation();
