@@ -11,13 +11,13 @@ let textSearch = null;
 let deferredPrompt = null;
 
 class App extends Component {
-  static async getInitialProps() {
-    const key = process.env.GOOGLEMAP_API_KEY;
-    console.log('getInitial Props', key)
-    return {
-      "env": key,
-    }
-  }
+  // static async getInitialProps() {
+  //   const key = process.env.GOOGLEMAP_API_KEY;
+  //   console.log('getInitial Props', key)
+  //   return {
+  //     "env": key,
+  //   }
+  // }
 
   constructor(props) {
     super(props);

@@ -57,6 +57,14 @@ export default class MyApp extends App {
             apiKey: process.env.GOOGLEMAP_API_KEY,
         }
     }
+    
+    // static async getInitialProps() {
+    //     const key = process.env.GOOGLEMAP_API_KEY;
+    //     console.log('getInitial Props', key)
+    //     return {
+    //         "env": key,
+    //     }
+    //   }
 
     static async getInitialProps({ Component, router, ctx }) {
         let pageProps = {}
@@ -65,9 +73,9 @@ export default class MyApp extends App {
             pageProps = await Component.getInitialProps(ctx)
         }
         const pathName = ctx.pathname;
-        // const key = process.env.GOOGLEMAP_API_KEY;
-        // console.log('getInitial Props APP.js', key)
-        return { pageProps, pathName }
+        const key = process.env.GOOGLEMAP_API_KEY;
+        console.log('getInitial Props APP.js', key)
+        return { pageProps, pathName, "env": key, }
     }
 
     componentDidMount() {
@@ -78,6 +86,7 @@ export default class MyApp extends App {
                 this.setUserInfo({}, false);
             }
         })
+        this.setState({apiKey: this.props.env})
     }
 
     setUserInfo = (user, isLogin) => {
