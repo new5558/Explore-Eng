@@ -40,11 +40,17 @@ class Account extends Component {
     }
 
     createUser = (user) => {
-        firestore.collection("users").doc(user.uid) && firestore.collection("users").doc(user.uid).set({
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-            score: 0
-        })
+        firestore.collection("users").doc(user.uid).get()
+            .then(doc => {
+                if (!doc.exists) {
+                    firestore.collection("users").doc(user.uid).set({
+                        displayName: user.displayName,
+                        photoURL: user.photoURL,
+                        score: 0
+                    })
+                }
+            })
+
     }
 
     setUserInfo = (userInfo, isLogin) => {
@@ -79,11 +85,11 @@ class Account extends Component {
                                         <React.Fragment>
                                             <div className="flex items-center justify-between flex-col h-full">
                                                 <div className="flex flex-col items-center mt-5">
-                                                    <img style={{height: "100px", width: "100px", background: '#b2b8c1 url(../static/icons/person.svg)  no-repeat center',  backgroundSize: "70px"}} className="rounded-full shadow" src={userInfo.photoURL + "?height=100"} />
+                                                    <img style={{ height: "100px", width: "100px", background: '#b2b8c1 url(../static/icons/person.svg)  no-repeat center', backgroundSize: "70px" }} className="rounded-full shadow" src={userInfo.photoURL + "?height=100"} />
                                                     <div className="flex text-center items-center flex-col">
-                                                            <div className="text-grey-darker text-xl mt-5 mb-2">
-                                                                {userInfo.displayName}
-                                                            </div>
+                                                        <div className="text-grey-darker text-xl mt-5 mb-2">
+                                                            {userInfo.displayName}
+                                                        </div>
                                                         <div className="text-blue">
                                                             <span className="text-3xl">{userInfo.score ? userInfo.score : 0} </span>
                                                             <span className="text-xl">Points</span>
