@@ -22,7 +22,7 @@ class Account extends Component {
                 // ...
             }
             // The signed-in user info.
-            this.createUser(result.user);
+            // this.createUser(result.user);
         }).catch((error) => {
             // Handle Errors here.
             var errorCode = error.code;
@@ -51,6 +51,10 @@ class Account extends Component {
                 }
             })
 
+    }
+    
+    componentDidMount() {
+        this.props.isLogin && this.createUser(this.props.userInfo);
     }
 
     setUserInfo = (userInfo, isLogin) => {
