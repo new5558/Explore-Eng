@@ -79,7 +79,7 @@ export default class MyApp extends App {
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                const data = firestore.collection("users").doc(user.uid).get()
+                firestore.collection("users").doc(user.uid).get()
                     .then(result => result.data())
                     .then(data => {
                         user.score = data.score;

@@ -277,7 +277,7 @@ class App extends Component {
     firestore.collection("users").doc(user.uid).set({
       displayName: user.displayName,
       photoURL: user.photoURL,
-      score: (user.score + 50)
+      score: (user.score  ? (user.score + 50) : 50)
     })
     user.score += 50;
     this.props.setUserInfo(user, true);
