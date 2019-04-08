@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase from '../util/firebase'
+import firebase, { firestore } from '../util/firebase'
 import { FacebookIcon } from '../components/shared-components/Icons';
 import Loading from '../components/shared-components/Loading';
 
@@ -22,7 +22,7 @@ class Account extends Component {
                 // ...
             }
             // The signed-in user info.
-            var user = result.user;
+            this.createUser(result.user);
         }).catch((error) => {
             // Handle Errors here.
             var errorCode = error.code;
@@ -39,6 +39,14 @@ class Account extends Component {
         });
     }
 
+    createUser = (user) => {
+        firestore.collection("users").doc(user.uid) && firestore.collection("users").doc(user.uid).set({
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            score: 0
+        })
+    }
+
     setUserInfo = (userInfo, isLogin) => {
         this.props.setUserInfo(userInfo, isLogin);
     }
@@ -47,10 +55,6 @@ class Account extends Component {
         firebase.auth().signOut().then(response => {
             this.setUserInfo({}, false);
         })
-    }
-
-    componentDidUpdate() {
-        console.log(this.props.userInfo.photoURL, this.props.userInfo)
     }
 
     render() {
@@ -81,7 +85,7 @@ class Account extends Component {
                                                                 {userInfo.displayName}
                                                             </div>
                                                         <div className="text-blue">
-                                                            <span className="text-3xl">3950 </span>
+                                                            <span className="text-3xl">{userInfo.score ? userInfo.score : 0} </span>
                                                             <span className="text-xl">Points</span>
                                                         </div>
                                                     </div>

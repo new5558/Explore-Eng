@@ -6,6 +6,7 @@ import { CloseIcon, CameraIcon, SuccessIcon } from '../components/shared-compone
 import Popup from '../components/home/Popup';
 import ProgressiveImage from 'react-progressive-image';
 import Loading from '../components/shared-components/Loading';
+import { firestore } from '../util/firebase';
 
 let textSearch = null;
 let deferredPrompt = null;
@@ -260,6 +261,27 @@ class App extends Component {
     setTimeout(() => this.openPopup(null, "Success"), 300)
   }
 
+  receivePoints = () => {
+    this.closePopup()
+    const user = this.props.userInfo
+    // firestore.collection("users").doc(user.uid).get()
+    //   .then(result => result.data())
+    //   .then(data => {
+    //     firestore.collection("users").doc(user.uid).set({
+    //       displayName: user.displayName,
+    //       photoURL: user.photoURL,
+    //       score: 
+    //     })
+    //   })
+    firestore.collection("users").doc(user.uid).set({
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      score: (user.score + 50)
+    })
+    user.score += 50;
+    this.props.setUserInfo(user, true);
+  }
+
   getImage = (e) => {
     const file = e.target.files;
     this.setState(prevState => {
@@ -368,6 +390,16 @@ class App extends Component {
   }
 
   render() {
+    const onClickRight = {
+      0: this.openInMaps,
+      1: this.closePopup,
+      2: this.closePopup,
+    }
+    const onClickLeft = {
+      0 : this.dropOff,
+      1 : this.submit,
+      2 : this.receivePoints,
+    }
     return (
       <div className="h-full" >
         <div className="fixed h-16 px-3 pin-t pin-l w-full z-40 flex flex-col items-center justify-center">
@@ -411,10 +443,10 @@ class App extends Component {
           isPopupPresent={this.state.isPopupPresent}
           name={this.state.popup.name}
           closePopup={this.closePopup}
-          onClickRight={this.state.popup.type === 0 ? this.openInMaps : this.closePopup}
-          onClickLeft={this.state.popup.type === 0 ? this.dropOff : this.submit}
+          onClickRight={onClickRight[this.state.popup.type]}
+          onClickLeft={onClickLeft[this.state.popup.type]}
           type={this.state.popup.type}
-          disabled={!this.state.popup.file && !this.state.isInRange && this.state.popup.type !== 2}
+          disabled={!this.props.isLogin || (!this.state.popup.file && !this.state.isInRange && this.state.popup.type !== 2)}
         >
           {this.generatePopup(this.state.popup.type)}
         </Popup>

@@ -2,7 +2,7 @@ import React from 'react'
 import App, { Container } from 'next/app'
 import { MapIcon, PersonIcon } from '../components/shared-components/Icons';
 import Link from 'next/link'
-import firebase from '../util/firebase'
+import firebase, { firestore } from '../util/firebase'
 import '../static/css/body.css'
 import '../util/tw.css';
 
@@ -56,7 +56,7 @@ export default class MyApp extends App {
             apiKey: process.env.GOOGLEMAP_API_KEY,
         }
     }
-    
+
     // static async getInitialProps() {
     //     const key = process.env.GOOGLEMAP_API_KEY;
     //     console.log('getInitial Props', key)
@@ -79,12 +79,20 @@ export default class MyApp extends App {
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
+                const data = firestore.collection("users").doc(user.uid).get()
+                    .then(result => result.data())
+                    .then(data => {
+                        user.score = data.score;
+                        this.setState({
+                            "userInfo": user,
+                        })
+                    })
                 this.setUserInfo(user, true);
             } else {
                 this.setUserInfo({}, false);
             }
         })
-        this.setState({apiKey: this.props.env})
+        this.setState({ apiKey: this.props.env })
     }
 
     setUserInfo = (user, isLogin) => {
