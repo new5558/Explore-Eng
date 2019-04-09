@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import firebase, { firestore } from '../util/firebase'
 import { FacebookIcon } from '../components/shared-components/Icons';
 import Loading from '../components/shared-components/Loading';
+import Router from 'next/router';
 
 class Account extends Component {
 
@@ -10,6 +11,10 @@ class Account extends Component {
         this.state = {
             loginErrorMessage: "",
         }
+    }
+
+    componentDidMount() {
+        
     }
 
     facebookLogin = () => {
@@ -23,6 +28,7 @@ class Account extends Component {
             }
             // The signed-in user info.
             // this.createUser(result.user);
+            Router.push('/account')
         }).catch((error) => {
             // Handle Errors here.
             var errorCode = error.code;
