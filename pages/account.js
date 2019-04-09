@@ -52,10 +52,10 @@ class Account extends Component {
             })
 
     }
-    
-    componentDidMount() {
-        this.props.isLogin && this.createUser(this.props.userInfo);
-    }
+
+
+
+
 
     setUserInfo = (userInfo, isLogin) => {
         this.props.setUserInfo(userInfo, isLogin);
