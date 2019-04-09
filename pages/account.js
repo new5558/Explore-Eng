@@ -13,10 +13,6 @@ class Account extends Component {
         }
     }
 
-    componentDidMount() {
-        
-    }
-
     facebookLogin = () => {
         var provider = new firebase.auth.FacebookAuthProvider();
         firebase.auth().signInWithRedirect(provider);
@@ -28,7 +24,6 @@ class Account extends Component {
             }
             // The signed-in user info.
             // this.createUser(result.user);
-            Router.push('/account')
         }).catch((error) => {
             // Handle Errors here.
             var errorCode = error.code;
