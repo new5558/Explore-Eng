@@ -83,11 +83,12 @@ export default class MyApp extends App {
                     .then(result => result.data())
                     .then(data => {
                         user.score = data.score;
-                        this.setState({
-                            "userInfo": user,
-                        })
+                        this.setUserInfo(user, true);
+  
+
                     })
-                this.setUserInfo(user, true);
+
+                this.createUser(user);
             } else {
                 this.setUserInfo({}, false);
             }
