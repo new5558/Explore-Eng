@@ -81,6 +81,9 @@ export default class MyApp extends App {
             if (user) {
                 firestore.collection("users").doc(user.uid).get()
                     .then(result => result.data())
+                    .catch(() => {
+                        this.setUserInfo(user, true);
+                    })
                     .then(data => {
                         user.score = data.score;
                         this.setUserInfo(user, true);
