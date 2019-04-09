@@ -263,8 +263,8 @@ class App extends Component {
   }
 
   receivePoints = () => {
-    this.closePopup()
-    const user = this.props.userInfo
+
+    let user = this.props.userInfo
     // firestore.collection("users").doc(user.uid).get()
     //   .then(result => result.data())
     //   .then(data => {
@@ -274,12 +274,13 @@ class App extends Component {
     //       score: 
     //     })
     //   })
+    user.score = (user.score  ? (user.score + 50) : 50)
     firestore.collection("users").doc(user.uid).set({
       displayName: user.displayName,
       photoURL: user.photoURL,
-      score: (user.score  ? (user.score + 50) : 50)
+      score: user.score
     })
-    user.score += 50;
+
     this.props.setUserInfo(user, true);
   }
 
