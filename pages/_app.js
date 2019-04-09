@@ -76,25 +76,25 @@ export default class MyApp extends App {
         return { pageProps, pathName, "env": key }
     }
 
-    componentDidMount() {
-        firebase.auth().onAuthStateChanged(user => {
-            if (user != undefined) {
-                firestore.collection("users").doc(user.uid).get()
-                    .then(result => result.data())
-                    .then(data => {
-                        user.score = data.score;
-                        this.setUserInfo(user, true);
-                    }).catch(() => {
-                        this.setUserInfo(user, true)
-                    })
-                // this.setUserInfo(user, true);
-                this.createUser(user);
-            } else {
-                this.setUserInfo({}, false);
-            }
-        })
-        this.setState({ apiKey: this.props.env })
-    }
+    // componentDidMount() {
+    //     firebase.auth().onAuthStateChanged(user => {
+    //         if (user != undefined) {
+    //             firestore.collection("users").doc(user.uid).get()
+    //                 .then(result => result.data())
+    //                 .then(data => {
+    //                     user.score = data.score;
+    //                     this.setUserInfo(user, true);
+    //                 }).catch(() => {
+    //                     this.setUserInfo(user, true)
+    //                 })
+    //             // this.setUserInfo(user, true);
+    //             this.createUser(user);
+    //         } else {
+    //             this.setUserInfo({}, false);
+    //         }
+    //     })
+    //     this.setState({ apiKey: this.props.env })
+    // }
 
     setUserInfo = (user, isLogin) => {
         this.setState({
@@ -122,7 +122,7 @@ export default class MyApp extends App {
         return (
             <Container>
                 <Layout path={pathName}>
-                    <Component firestore={this.props.firestore} env={this.state.apiKey ? this.state.apiKey : this.props.env} isLogin={this.state.isLogin} userInfo={this.state.userInfo} setUserInfo={this.setUserInfo} {...pageProps} />
+                    <Component firestore={this.props.firestore} env={this.state.apiKey ? this.state.apiKey : this.props.env} isLogin={this.state.isLogin} userInfo={this.state.userInfo} createUser={this.createUser} setUserInfo={this.setUserInfo} {...pageProps} />
                 </Layout>
             </Container>
         )

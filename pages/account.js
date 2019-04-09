@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import firebase, { firestore } from '../util/firebase'
 import { FacebookIcon } from '../components/shared-components/Icons';
 import Loading from '../components/shared-components/Loading';
-import Router from 'next/router';
 
 class Account extends Component {
 
@@ -11,6 +10,26 @@ class Account extends Component {
         this.state = {
             loginErrorMessage: "",
         }
+    }
+
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user != undefined) {
+                firestore.collection("users").doc(user.uid).get()
+                    .then(result => result.data())
+                    .then(data => {
+                        user.score = data.score;
+                        this.setUserInfo(user, true);
+                    }).catch(() => {
+                        this.setUserInfo(user, true)
+                    })
+                // this.setUserInfo(user, true);
+                this.createUser(user);
+            } else {
+                this.setUserInfo({}, false);
+            }
+        })
+        this.setState({ apiKey: this.props.env })
     }
 
     facebookLogin = () => {
@@ -42,6 +61,10 @@ class Account extends Component {
 
     setUserInfo = (userInfo, isLogin) => {
         this.props.setUserInfo(userInfo, isLogin);
+    }
+
+    createUser = (user) => {
+        this.props.createUser(user)
     }
 
     logout = () => {

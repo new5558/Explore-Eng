@@ -6,7 +6,7 @@ import { CloseIcon, CameraIcon, SuccessIcon } from '../components/shared-compone
 import Popup from '../components/home/Popup';
 import ProgressiveImage from 'react-progressive-image';
 import Loading from '../components/shared-components/Loading';
-import { firestore } from '../util/firebase';
+import firebase, { firestore } from '../util/firebase';
 
 let textSearch = null;
 let deferredPrompt = null;
@@ -96,6 +96,24 @@ class App extends Component {
   }
 
   componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user != undefined) {
+        firestore.collection("users").doc(user.uid).get()
+          .then(result => result.data())
+          .then(data => {
+            user.score = data.score;
+            this.setUserInfo(user, true);
+          }).catch(() => {
+            this.setUserInfo(user, true)
+          })
+        // this.setUserInfo(user, true);
+        this.createUser(user);
+      } else {
+        this.setUserInfo({}, false);
+      }
+    })
+    this.setState({ apiKey: this.props.env })
+
     // Detects if device is on iOS 
     const isIos = () => {
       const userAgent = window.navigator.userAgent.toLowerCase();
@@ -117,6 +135,14 @@ class App extends Component {
       deferredPrompt = e;
       setTimeout(() => this.setState({ showChromeInstallMessage: true }), 3000);
     });
+  }
+
+  setUserInfo = (userInfo, isLogin) => {
+    this.props.setUserInfo(userInfo, isLogin);
+  }
+
+  createUser = (user) => {
+    this.props.createUser(user)
   }
 
   onSearchOpen = () => {
@@ -275,7 +301,7 @@ class App extends Component {
     //       score: 
     //     })
     //   })
-    user.score = (user.score  ? (user.score + 50) : 50)
+    user.score = (user.score ? (user.score + 50) : 50)
     firestore.collection("users").doc(user.uid).set({
       displayName: user.displayName,
       photoURL: user.photoURL,
@@ -399,9 +425,9 @@ class App extends Component {
       2: this.closePopup,
     }
     const onClickLeft = {
-      0 : this.dropOff,
-      1 : this.submit,
-      2 : this.closePopup,
+      0: this.dropOff,
+      1: this.submit,
+      2: this.closePopup,
     }
     return (
       <div className="h-full" >
