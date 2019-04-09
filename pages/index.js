@@ -258,6 +258,7 @@ class App extends Component {
   }
 
   submit = () => {
+    this.receivePoints()
     this.closePopup()
     setTimeout(() => this.openPopup(null, "Success"), 300)
   }
@@ -400,7 +401,7 @@ class App extends Component {
     const onClickLeft = {
       0 : this.dropOff,
       1 : this.submit,
-      2 : this.receivePoints,
+      2 : this.closePopup,
     }
     return (
       <div className="h-full" >
