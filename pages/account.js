@@ -39,24 +39,6 @@ class Account extends Component {
         });
     }
 
-    createUser = (user) => {
-        firestore.collection("users").doc(user.uid).get()
-            .then(doc => {
-                if (!doc.exists) {
-                    firestore.collection("users").doc(user.uid).set({
-                        displayName: user.displayName,
-                        photoURL: user.photoURL,
-                        score: 0
-                    })
-                }
-            })
-
-    }
-
-
-
-
-
     setUserInfo = (userInfo, isLogin) => {
         this.props.setUserInfo(userInfo, isLogin);
     }

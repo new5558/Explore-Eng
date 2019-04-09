@@ -78,19 +78,16 @@ export default class MyApp extends App {
 
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
-            if (user) {
+            if (user != undefined) {
                 firestore.collection("users").doc(user.uid).get()
                     .then(result => result.data())
-                    .catch(() => {
-                        this.setUserInfo(user, true);
-                    })
                     .then(data => {
                         user.score = data.score;
                         this.setUserInfo(user, true);
-  
-
+                    }).catch(() => {
+                        this.setUserInfo(user, true)
                     })
-
+                // this.setUserInfo(user, true);
                 this.createUser(user);
             } else {
                 this.setUserInfo({}, false);
@@ -104,6 +101,19 @@ export default class MyApp extends App {
             userInfo: user,
             isLogin
         })
+    }
+
+    createUser = (user) => {
+        firestore.collection("users").doc(user.uid).get()
+            .then(doc => {
+                if (!doc.exists) {
+                    firestore.collection("users").doc(user.uid).set({
+                        displayName: user.displayName,
+                        photoURL: user.photoURL,
+                        score: 0
+                    })
+                }
+            })
     }
 
     render() {
