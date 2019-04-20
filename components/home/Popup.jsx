@@ -22,7 +22,7 @@ export default ({ isPopupPresent, isFaddingOut, disabled, name, closePopup, onCl
                         {typeCss[type][1]}
                     </div>
                     {
-                        !(type === 0 && log(longitude, latitude, type) && iOSversion(1) && iOSversion(2)[0] === 12 && iOSversion(3)[1] === 2 && longitude !== null && latitude !== null)
+                        (type === 0 && log(longitude, latitude, type) && iOSversion(1) && (iOSversion(2)[0] === 12) && (iOSversion(3)[1] === 2) && (longitude !== null) && (latitude !== null))
                             ?
                             (
                                 <div className={"text-center w-full py-2 " + typeCss[type][2]}>
