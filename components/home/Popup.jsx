@@ -56,6 +56,6 @@ const iOSversion = (debug) => {
 
 const log = (longitude, latitude, type) => {
     // alert('asd')
-    alert((type === 0) + " | " + iOSversion() + " | " + (iOSversion() && (iOSversion()[0] === 12))  + " | " + (iOSversion() && (iOSversion()[1] === 2))  + " | " + (longitude !== null)  + " | " + (latitude !== null));
+    // alert((type === 0) + " | " + iOSversion() + " | " + (iOSversion() && (iOSversion()[0] === 12))  + " | " + (iOSversion() && (iOSversion()[1] === 2))  + " | " + (longitude !== null)  + " | " + (latitude !== null));
     return true;
 }
