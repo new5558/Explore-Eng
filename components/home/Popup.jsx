@@ -26,7 +26,7 @@ export default ({ isPopupPresent, isFaddingOut, disabled, name, closePopup, onCl
                             ?
                             (
                                 <div className={"text-center w-full py-2 " + typeCss[type][2]}>
-                                    <a className="text-green no-underline" href={"maps://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll="} target="_blank">
+                                    <a className="text-green no-underline" target="_blank" href={"maps://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll="} target="_blank">
                                         {typeCss[type][3]}
                                     </a>
                                 </div>
