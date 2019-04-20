@@ -1,5 +1,5 @@
-export default ({ isPopupPresent, isFaddingOut, disabled, name, closePopup, onClickRight, onClickLeft, children, type = 0 }) => {
-    if(type === null) {
+export default ({ isPopupPresent, isFaddingOut, disabled, name, closePopup, onClickRight, onClickLeft, children, type = 0, latitude, longitude }) => {
+    if (type === null) {
         type = 1;
     }
     const typeCss = {
@@ -21,11 +21,34 @@ export default ({ isPopupPresent, isFaddingOut, disabled, name, closePopup, onCl
                     <div onClick={disabled ? (e) => (e) : onClickLeft} className={"text-center w-full py-2 " + (disabled ? "text-grey" : "")}>
                         {typeCss[type][1]}
                     </div>
-                    <div onClick={onClickRight} className={"text-center w-full py-2 " + typeCss[type][2]}>
-                        {typeCss[type][3]}
-                    </div>
+                    {
+                        (type === 0 && iOSversion() === 12.2 && !(longitude === null || latitude === null))
+                            ?
+                            (
+                                <div className={"text-center w-full py-2 " + typeCss[type][2]}>
+                                    <a href={"maps://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll="} target="_blank">
+                                        {typeCss[type][3]}
+                                    </a>
+                                </div>
+                            )
+                            :
+                            (
+                                <div onClick={onClickRight} className={"text-center w-full py-2 " + typeCss[type][2]}>
+                                    {typeCss[type][3]}
+                                </div>
+                            )
+                    }
                 </div>
             </div>
         </div>
     )
+}
+
+function iOSversion() {
+    if (/iP(hone|od|ad)/.test(navigator.platform)) {
+        // supports iOS 2.0 and later: <http://bit.ly/TJjs1V>
+        var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+        alert([parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)])
+        return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+    }
 }

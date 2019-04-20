@@ -478,6 +478,8 @@ class App extends Component {
           onClickLeft={onClickLeft[this.state.popup.type]}
           type={this.state.popup.type}
           disabled={!this.props.isLogin || (!this.state.popup.file && !this.state.isInRange && this.state.popup.type !== 2)}
+          latitude={this.state.popup.latitude} 
+          longitude={this.state.popup.longitude}
         >
           {this.generatePopup(this.state.popup.type)}
         </Popup>
