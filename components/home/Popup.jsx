@@ -22,10 +22,10 @@ export default ({ isPopupPresent, isFaddingOut, disabled, name, closePopup, onCl
                         {typeCss[type][1]}
                     </div>
                     {
-                        (type === 0 && iOSversion() === 12.2 && !(longitude === null || latitude === null))
+                        (type === 0 && iOSversion() === 12.2 && longitude !== null && latitude !== null)
                             ?
                             (
-                                <div className={"text-center w-full py-2 " + typeCss[type][2]}>
+                                <div className={"text-center w-full py-2 no-underline" + typeCss[type][2]}>
                                     <a href={"maps://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll="} target="_blank">
                                         {typeCss[type][3]}
                                     </a>
