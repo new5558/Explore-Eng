@@ -46,7 +46,7 @@ export default ({ isPopupPresent, isFaddingOut, disabled, name, closePopup, onCl
 
 const iOSversion = (debug) => {
     if (/iP(hone|od|ad)/.test(navigator.platform)) {
-        alert('version ' + debug)
+        // alert('version ' + debug)
         // supports iOS 2.0 and later: <http://bit.ly/TJjs1V>
         var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
         // alert([parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)])
