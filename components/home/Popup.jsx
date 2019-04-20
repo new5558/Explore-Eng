@@ -22,7 +22,7 @@ export default ({ isPopupPresent, isFaddingOut, disabled, name, closePopup, onCl
                         {typeCss[type][1]}
                     </div>
                     {
-                        !(type === 0 && iOSversion() && iOSversion()[0] === 12 && iOSversion()[1] === 2 && longitude !== null && latitude !== null)
+                        !(type === 0 && log(longitude, latitude, type) && iOSversion(1) && iOSversion(2)[0] === 12 && iOSversion(3)[1] === 2 && longitude !== null && latitude !== null)
                             ?
                             (
                                 <div className={"text-center w-full py-2 " + typeCss[type][2]}>
@@ -44,11 +44,18 @@ export default ({ isPopupPresent, isFaddingOut, disabled, name, closePopup, onCl
     )
 }
 
-function iOSversion() {
+const iOSversion = (debug) => {
     if (/iP(hone|od|ad)/.test(navigator.platform)) {
+        alert('version ' + debug)
         // supports iOS 2.0 and later: <http://bit.ly/TJjs1V>
         var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
         // alert([parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)])
         return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
     }
+}
+
+const log = (longitude, latitude, type) => {
+    // alert('asd')
+    alert((type === 0) + " | " + iOSversion() + " | " + (iOSversion() && (iOSversion()[0] === 12))  + " | " + (iOSversion() && (iOSversion()[1] === 2))  + " | " + (longitude !== null)  + " | " + (latitude !== null));
+    return true;
 }
