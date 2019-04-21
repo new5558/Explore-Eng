@@ -273,6 +273,7 @@ class App extends Component {
       (navigator.platform.indexOf("iPad") != -1) ||
       (navigator.platform.indexOf("iPod") != -1))
       if((iOSversion(1) && (iOSversion(2)[0] === 12) && (iOSversion(3)[1] === 2))) {
+        alert("alert")
         window.open("http://maps.apple.com/?daddr=" + latitude + "," + longitude, '_blank');
       } else {
         window.open("maps://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=", '_blank');
