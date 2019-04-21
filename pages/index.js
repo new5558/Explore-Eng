@@ -272,7 +272,11 @@ class App extends Component {
       ((navigator.platform.indexOf("iPhone") != -1) ||
       (navigator.platform.indexOf("iPad") != -1) ||
       (navigator.platform.indexOf("iPod") != -1))
-      window.open("maps://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=", '_blank');
+      if((iOSversion(1) && (iOSversion(2)[0] === 12) && (iOSversion(3)[1] === 2))) {
+        window.open("http://maps.apple.com/?daddr=" + latitude + "," + longitude, '_blank');
+      } else {
+        window.open("maps://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=", '_blank');
+      }
       // location.href = "maps://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=";
     else /* else use Google */
       window.open("https://maps.google.com/maps?daddr=" + latitude + "," + longitude + "&amp;ll=", '_blank');
@@ -537,6 +541,17 @@ class App extends Component {
       </div >
     );
   }
+}
+
+
+const iOSversion = () => {
+    if (/iP(hone|od|ad)/.test(navigator.platform)) {
+        // alert('version ' + debug)
+        // supports iOS 2.0 and later: <http://bit.ly/TJjs1V>
+        var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+        // alert([parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)])
+        return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+    }
 }
 
 export default App;
